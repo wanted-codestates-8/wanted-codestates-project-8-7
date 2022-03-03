@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 import { store } from "redux/store";
-import { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -74,20 +74,22 @@ const GlobalStyles = createGlobalStyle`
 
 const persistor = persistStore(store);
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const theme = {
-    colors: {
-      //@ common style
-      mainColor: "#FF6363",
-      pointColor: "",
-      lightblue: "#C5E2EE",
-      starColor: "#fd4",
-      grayOne: "#F7F7F7",
-      blackOne: "#1c1c1c",
-      blackTwo: "#111",
-    },
-  };
+const theme = {
+  colors: {
+    //@ common style
+    mainColor: "#FF6363",
+    pointColor: "#304ffd",
+    lightblue: "#C5E2EE",
+    starColor: "#fd4",
+    grayOne: "#F7F7F7",
+    blackOne: "#1c1c1c",
+    blackTwo: "#111",
+  },
+};
 
+export type Theme = typeof theme;
+
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider store={store}>
       <ThemeProvider theme={theme}>

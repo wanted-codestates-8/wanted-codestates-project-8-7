@@ -6,10 +6,10 @@ const Home: NextPage = () => {
   </Main>;
 };
 
-const Main = styled.main`
+export const Main = styled.main`
   min-width: 50rem;
   max-width: 80rem;
-  height: 100vh;
+  min-height: 100vh;
   border: solid 1px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
 `;
