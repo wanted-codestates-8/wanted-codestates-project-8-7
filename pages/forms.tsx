@@ -21,21 +21,24 @@ export interface State {
 
 export interface FormProps {
   state: State;
-
-  onChange: (value: string | boolean | string[]) => void;
+  onChange: (key: string, newField: State) => void;
 }
 
 const Forms: NextPage = () => {
-  const [data, setData] = useState({
-    title: "",
-    fieldList: [] as State[],
-  });
+  const [title, setTitle] = useState("");
+  const [formList, setFormList] = useState<State[]>([]);
 
-  function addField() {
+  const onChange = (key: string, newField: State) => {
+    const idx = formList.findIndex((form) => form.key === key);
+
+    setFormList(formList.splice(idx, 1, newField));
+  };
+
+  function addForm() {
     const newData = {
-      ...data,
+      ...formList,
     };
-    newData.fieldList.push({
+    newData.push({
       key: uuid(),
       id: "name",
       type: "text",
@@ -44,20 +47,30 @@ const Forms: NextPage = () => {
       placeholder: "",
     });
 
-    setData(newData);
+    setFormList(newData);
   }
 
   return (
     <Main>
-      {/* <Form state={{}} onChange={() => {}} /> */}
       <TitleSection></TitleSection>
 
-      <FieldSection>
-        <FieldList>
+      <FormSection>
+        <FormList>
           {/* map으로 돌아갈것임 */}
-          <FieldItem>{/* <Form/> */}</FieldItem>
-        </FieldList>
-      </FieldSection>
+          <FormItem>
+            <Form
+              state={{
+                key: "0",
+                id: "0",
+                type: "text",
+                required: true,
+                label: "이름",
+              }}
+              onChange={onChange}
+            />
+          </FormItem>
+        </FormList>
+      </FormSection>
 
       <AddButton />
 
@@ -65,13 +78,13 @@ const Forms: NextPage = () => {
     </Main>
   );
 
-  //   return data.fieldList.map((data,idx) => <Form key={idx} state={} onChange={}/>);
+  //   return data.formList.map((data,idx) => <Form key={idx} state={} onChange={}/>);
 };
 
 const TitleSection = styled.section``;
-const FieldSection = styled.section``;
-const FieldList = styled.ul``;
-const FieldItem = styled.li``;
+const FormSection = styled.section``;
+const FormList = styled.ul``;
+const FormItem = styled.li``;
 const AddButton = styled.button``;
 const SaveSection = styled.section``;
 

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { CgArrowsVAlt } from "react-icons/cg";
 
-function Form({ state: { type }, onChange }: FormProps) {
+function Form({ state, onChange }: FormProps) {
   const [value, setValue] = useState("");
   console.log(value, "1212312312#");
   function handleValue(value: any) {
