@@ -4,10 +4,11 @@ import Form from "components/Form";
 import { makeStructure } from "utils/makeStructure";
 import styled, { css } from "styled-components";
 import { Main } from "./index";
+import { v4 as uuid } from "uuid";
 import "react-quill/dist/quill.snow.css";
 
 export interface State {
-  idx: number;
+  key: string;
   id: string;
   type: string;
   required: boolean;
@@ -19,7 +20,7 @@ export interface State {
 }
 
 export interface FormProps {
-  state: any;
+  state: State;
 
   onChange: (value: string | boolean | string[]) => void;
 }
@@ -35,7 +36,7 @@ const Forms: NextPage = () => {
       ...data,
     };
     newData.fieldList.push({
-      idx: data.fieldList.length,
+      key: uuid(),
       id: "name",
       type: "text",
       required: false,
@@ -48,7 +49,7 @@ const Forms: NextPage = () => {
 
   return (
     <Main>
-      <Form state={{}} onChange={() => {}} />
+      {/* <Form state={{}} onChange={() => {}} /> */}
       <TitleSection></TitleSection>
 
       <FieldSection>
