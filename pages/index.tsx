@@ -1,11 +1,11 @@
-import MakedForm from "components/MakedForm";
+import GeneratedForm from "components/GeneratedForm";
 import type { NextPage } from "next";
 
 import styled from "styled-components";
 
 const Home: NextPage = () => {
   return <Main>
-    <MakedForm />
+    <GeneratedForm />
   </Main>;
 };
 
