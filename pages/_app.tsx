@@ -6,8 +6,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-  const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
     * {
         margin: 0;
         padding: 0;
@@ -72,6 +71,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }
   `;
 
+const persistor = persistStore(store);
+
+function MyApp({ Component, pageProps }: AppProps) {
   const theme = {
     colors: {
       //@ common style
@@ -84,15 +86,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       blackTwo: "#111",
     },
   };
-  const persistor = persistStore(store);
+
   return (
     <ReduxProvider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <PersistGate loading={null} persistor={persistor}>
           <GlobalStyles />
           <Component {...pageProps} />
-        </ThemeProvider>
-      </PersistGate>
+        </PersistGate>
+      </ThemeProvider>
     </ReduxProvider>
   );
 }
+export default MyApp;
