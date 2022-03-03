@@ -6,7 +6,7 @@ const Home: NextPage = () => {
   return <Main>nextjs</Main>;
 };
 
-const Main = styled.main`
+export const Main = styled.main`
   min-width: 50rem;
   max-width: 80rem;
   height: 100vh;
