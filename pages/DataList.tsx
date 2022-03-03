@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
 import Header from "./Header";
-import { VscDebugBreakpointData } from 'react-icons/vsc'
+import { FcTodoList } from 'react-icons/fc'
 
 const DataList: NextPage = () => {
   return (
@@ -10,30 +10,30 @@ const DataList: NextPage = () => {
         <Header />
         <Data>
           <TitleValue>
-            <VscDebugBreakpointData 
-            size="2rem" 
+            <FcTodoList 
+            size="3rem" 
             style={{ marginRight:"15px"}} />
             이름</TitleValue>
           <InputValue>김혜영</InputValue>
           <TitleValue>
-            <VscDebugBreakpointData 
-            size="2rem" 
+            <FcTodoList 
+            size="3rem" 
             style={{ marginRight:"15px"}} />
             휴대폰 번호</TitleValue>
           <InputValue>010-1234-5678</InputValue>
           <TitleValue>
-            <VscDebugBreakpointData 
-            size="2rem" 
+            <FcTodoList 
+            size="3rem" 
             style={{ marginRight:"15px"}} />
             배송지</TitleValue>
           <InputValue>서울 성동구 독서당로 160 한남하이츠아파트 상가 1층</InputValue>
           <TitleValue>
-            <VscDebugBreakpointData 
-            size="2rem" 
+            <FcTodoList 
+            size="3rem" 
             style={{ marginRight:"15px"}} />
             옵션 1</TitleValue>
           <InputValue>사이즈 S</InputValue>
-          <div>첨부파일</div>
+          <TitleValue>첨부파일</TitleValue>
         </Data>
       </DataListWrapper>
     </>
@@ -50,6 +50,7 @@ const DataListWrapper = styled.main`
 
   display: flex;
   flex-direction: column;
+  overflow: scroll;
 `;
 
 const Data = styled.div`
@@ -67,7 +68,7 @@ const Data = styled.div`
 
   padding: 5% 10% 5% 10%;
 
-  overflow: scroll;
+  /* overflow: scroll; */
 
 
   /* display: flex;
@@ -90,6 +91,11 @@ const InputValue = styled.div`
   padding: 2rem;
   line-height: 5rem;
   overflow: auto
+`
+
+const Number = styled.div`
+
+
 `
 
 export default DataList;
