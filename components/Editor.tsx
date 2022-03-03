@@ -47,12 +47,19 @@ function Editor({ value, onChange }: EditorProps) {
   return (
     <ReactQuillContainer>
       <ReactQuill
-        style={{ width: "100%", height: "100%" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          border: "none",
+          outline: "none",
+        }}
         theme="snow"
         modules={modules}
         formats={formats}
         value={value || ""}
-        onChange={(content, delta, source, editor) => onChange(editor.getHTML())}
+        onChange={(content, delta, source, editor) =>
+          onChange(editor.getHTML())
+        }
       />
     </ReactQuillContainer>
   );
@@ -60,6 +67,28 @@ function Editor({ value, onChange }: EditorProps) {
 
 const ReactQuillContainer = styled.div`
   height: 50%;
+  overflow: hidden;
+
+  .ql-stroke,
+  .ql-fill,
+  .ql-even,
+  svg {
+    fill: none;
+    stroke: grey;
+  }
+  .ql-active {
+    fill: none;
+    stroke: black;
+  }
+  button {
+    :hover {
+      stroke: black;
+    }
+  }
+
+  .ql-snow {
+    border: none;
+  }
 `;
 
 export default Editor;
