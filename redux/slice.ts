@@ -1,33 +1,28 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { State } from "pages/forms";
 
 import type { AppState } from "./store";
 
 export interface FormState {
-  value: number;
-  status: "idle" | "loading" | "failed";
+  forms: { title: string; formList: State[] }[];
+  data: {}[];
 }
 
 const initialState: FormState = {
-  value: 0,
-  status: "idle",
+  forms: [],
+  data: [],
 };
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    addFormData: (state, { payload }: PayloadAction<{ title: string; formList: State[] }>) => {
+      state.forms.push(payload);
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = formSlice.actions;
+export const { addFormData } = formSlice.actions;
 export const selectForm = (state: AppState) => state.form;
 export default formSlice.reducer;

@@ -3,9 +3,11 @@ import type { NextPage } from "next";
 import Form from "components/Form";
 import styled, { css } from "styled-components";
 import { Main } from "./index";
-import { v4 as uuid } from "uuid";
 import "react-quill/dist/quill.snow.css";
 import { makeStructure } from "utils/makeStructure";
+import { useDispatch } from "react-redux";
+import { addFormData } from "redux/slice";
+import { useRouter } from "next/router";
 
 export interface State {
   key: string;
@@ -26,8 +28,12 @@ export interface FormProps {
 }
 
 const Forms: NextPage = () => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [formList, setFormList] = useState<State[]>([]);
+  const [submitState, setSubmitState] = useState({
+    text: "",
+  });
 
   const onChange = (key: string, newField: State) => {
     const idx = formList.findIndex((form) => form.key === key);
@@ -37,10 +43,6 @@ const Forms: NextPage = () => {
 
     setFormList(tempList);
   };
-
-  useEffect(() => {
-    console.log(formList);
-  }, [formList]);
 
   function addForm() {
     const newData = [...formList];
@@ -55,12 +57,31 @@ const Forms: NextPage = () => {
     setFormList(filteredFormList);
   };
 
+  const saveForm = () => {
+    const findBlank = () => {
+      return formList.some((form) => {
+        const values = Object.values(form);
+      });
+    };
+
+    if (!title || !formList.length) {
+      alert("hello");
+    }
+
+    dispatch(
+      addFormData({
+        title,
+        formList,
+      })
+    );
+  };
+
   return (
     <Main>
       <InputForm onSubmit={(e) => e.preventDefault()}>
         <Section>
           <Title>제목*</Title>
-          <Input></Input>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)}></Input>
         </Section>
 
         <Section>
@@ -76,12 +97,10 @@ const Forms: NextPage = () => {
 
         <AddButton onClick={addForm}>필드 추가하기</AddButton>
 
-        <SaveButton>저장 하기</SaveButton>
+        <SaveButton onClick={saveForm}>저장 하기</SaveButton>
       </InputForm>
     </Main>
   );
-
-  //   return data.formList.map((data,idx) => <Form key={idx} state={} onChange={}/>);
 };
 
 const InputForm = styled.form`
@@ -104,7 +123,7 @@ const FormList = styled.ul``;
 const FormItem = styled.li``;
 const AddButton = styled.button`
   border: solid 1px blue;
-  color: blue;
+  color: ${({ theme }) => theme.colors.pointColor};
   width: 100%;
   height: 40px;
   background-color: white;
@@ -115,7 +134,7 @@ const SaveButton = styled.button`
   width: 90px;
   height: 40px;
   border-radius: 10px;
-  background-color: blue;
+  background-color: ${({ theme }) => theme.colors.pointColor};
   color: white;
   float: right;
   margin-top: 20px;

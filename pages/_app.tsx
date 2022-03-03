@@ -78,7 +78,7 @@ const theme = {
   colors: {
     //@ common style
     mainColor: "#FF6363",
-    pointColor: "",
+    pointColor: "#304ffd",
     lightblue: "#C5E2EE",
     starColor: "#fd4",
     grayOne: "#F7F7F7",
