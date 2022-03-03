@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-
 import styled from "styled-components";
 
 const Home: NextPage = () => {
-  return <Main>nextjs</Main>;
+  return <Main>
+  </Main>;
 };
 
 export const Main = styled.main`

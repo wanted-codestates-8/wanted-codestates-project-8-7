@@ -5,7 +5,7 @@ import { createGlobalStyle } from "styled-components";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import { type } from "os";
+import Script from "next/script";
 
 const GlobalStyles = createGlobalStyle`
     * {
@@ -95,6 +95,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <PersistGate loading={null} persistor={persistor}>
           <GlobalStyles />
+          <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
           <Component {...pageProps} />
         </PersistGate>
       </ThemeProvider>
