@@ -1,27 +1,30 @@
-import React, { useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
-const Name: any = () => {
+interface NameProps {
+  label: string,
+  placeholder: string,
+  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  name: string,
+}
 
-  const [name, setName] = useState<string>('');
-  const [isRequired, setIsRequired] = useState<boolean>(true);
-  const nameRef = useRef();
-
-  const onChangeNameValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value)
-    if (e.target.value = '') {
-      setIsRequired(false);
-    }
-
-  }
+const Name = ({ label, placeholder, onChangeName, name } : NameProps ) => {
+  const [inputState, setInputState] = useState(false);
 
   return (
     <Wrapper>
-      <Text>이름</Text>
-      <Input type="name" placeholder="주민등록상 이름 입력" onChange={onChangeNameValue} value={name} />
-      <Warning>
-        이름 항목은 필수 정보입니다.
-      </Warning>
+      <Text>{label}</Text>
+      <Input
+        onBlur={() => setInputState(true) }
+        type="name"
+        placeholder={placeholder} onChange={onChangeName} value={name} />
+      {
+        name === '' && inputState ?
+          <Warning>
+            이름 항목은 필수 정보입니다.
+          </Warning>
+          : null
+      }
     </Wrapper>
   )
 };

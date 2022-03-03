@@ -1,11 +1,32 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 
+const options = [
+    "S",
+    "L",
+    "XL",
+    "XXL"
+]
+
 const Options = () => {
-  return (
-      <Wrapper>
-          <Text>옵션1</Text>
-          <List />
+
+    const dropdownRef = useRef(null);
+    const [isActive, setIsActive] = useState(false)
+    
+    return (
+        <Wrapper>
+            <Text>옵션1</Text>
+            <ListWrapper>
+                <List onClick={() => setIsActive(!isActive)} />
+                {
+                    isActive ? <OptionItem>
+                        {options && options.map((item,idx) => 
+                                {item}
+                        )}
+                    </OptionItem>
+                        : null
+                }
+        </ListWrapper>
     </Wrapper>
     )
     
@@ -18,7 +39,11 @@ const Text = styled.div`
   font-weight: 800;
 `;
 
-const List = styled.div`
+const ListWrapper = styled.div`
+    width: 100%;
+`
+
+const List = styled.select`
   border-style: none;
   border-radius: 10px;
   background-color: #e9e9e9;
@@ -27,5 +52,7 @@ const List = styled.div`
   width: 400px;
   height: 54px;
 `;
+
+const OptionItem = styled.option``
 
 export default Options;
