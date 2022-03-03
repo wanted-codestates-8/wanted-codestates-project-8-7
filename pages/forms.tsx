@@ -50,14 +50,17 @@ const Forms: NextPage = () => {
   return (
     <Main>
       {/* <Form state={{}} onChange={() => {}} /> */}
-      <TitleSection></TitleSection>
+      <Section>
+        <ListTitle>제목*</ListTitle>
+      </Section>
 
-      <FieldSection>
+      <Section>
+        <ListTitle>필드목록*</ListTitle>
         <FieldList>
           {/* map으로 돌아갈것임 */}
           <FieldItem>{/* <Form/> */}</FieldItem>
         </FieldList>
-      </FieldSection>
+      </Section>
 
       <AddButton />
 
@@ -68,11 +71,13 @@ const Forms: NextPage = () => {
   //   return data.fieldList.map((data,idx) => <Form key={idx} state={} onChange={}/>);
 };
 
-const TitleSection = styled.section``;
-const FieldSection = styled.section``;
+const Section = styled.section``;
 const FieldList = styled.ul``;
 const FieldItem = styled.li``;
 const AddButton = styled.button``;
 const SaveSection = styled.section``;
+const ListTitle = styled.h3`
+  color: gray;
+`;
 
 export default Forms;
