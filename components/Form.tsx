@@ -70,12 +70,12 @@ function Form({ state, onChange, onRemove }: FormProps) {
   );
 }
 const EditorWrapper = styled.div`
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
   border: solid 1px #eeeef0;
-  margin-top: 20px;
+  margin-bottom: 20px;
 `;
 const EditorHeader = styled.div`
   width: 100%;

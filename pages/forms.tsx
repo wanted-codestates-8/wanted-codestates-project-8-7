@@ -57,32 +57,69 @@ const Forms: NextPage = () => {
 
   return (
     <Main>
-      <TitleSection></TitleSection>
+      <InputForm onSubmit={(e) => e.preventDefault()}>
+        <Section>
+          <Title>제목*</Title>
+          <Input></Input>
+        </Section>
 
-      <FormSection>
-        <FormList>
-          {formList.map((form) => (
-            <FormItem key={form.key}>
-              <Form state={form} onChange={onChange} onRemove={removeForm} />
-            </FormItem>
-          ))}
-        </FormList>
-      </FormSection>
+        <Section>
+          <Title>필드목록*</Title>
+          <FormList>
+            {formList.map((form) => (
+              <FormItem key={form.key}>
+                <Form state={form} onChange={onChange} onRemove={removeForm} />
+              </FormItem>
+            ))}
+          </FormList>
+        </Section>
 
-      <AddButton onClick={addForm}>+ 추가</AddButton>
+        <AddButton onClick={addForm}>필드 추가하기</AddButton>
 
-      <SaveSection />
+        <SaveButton>저장 하기</SaveButton>
+      </InputForm>
     </Main>
   );
 
   //   return data.formList.map((data,idx) => <Form key={idx} state={} onChange={}/>);
 };
 
-const TitleSection = styled.section``;
-const FormSection = styled.section``;
+const InputForm = styled.form`
+  width: 80%;
+  margin: 0 auto;
+`;
+const Title = styled.h3`
+  color: grey;
+  margin-top: 20px;
+`;
+const Section = styled.section``;
+const Input = styled.input`
+  width: 100%;
+  height: 45px;
+  border: solid 1px #eeeef0;
+  border-radius: 10px;
+  margin: 0 auto;
+`;
 const FormList = styled.ul``;
 const FormItem = styled.li``;
-const AddButton = styled.button``;
-const SaveSection = styled.section``;
+const AddButton = styled.button`
+  border: solid 1px blue;
+  color: blue;
+  width: 100%;
+  height: 40px;
+  background-color: white;
+  border-radius: 10px;
+  font-size: 18px;
+`;
+const SaveButton = styled.button`
+  width: 90px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: blue;
+  color: white;
+  float: right;
+  margin-top: 20px;
+  font-size: 18px;
+`;
 
 export default Forms;
