@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Form from "components/Form";
-import { makeStructure } from "utils/makeStructure";
 import styled, { css } from "styled-components";
 import { Main } from "./index";
 import { v4 as uuid } from "uuid";
 import "react-quill/dist/quill.snow.css";
+import { makeStructure } from "utils/makeStructure";
 
 export interface State {
   key: string;
@@ -22,6 +22,7 @@ export interface State {
 export interface FormProps {
   state: State;
   onChange: (key: string, newField: State) => void;
+  onRemove: (key: string) => void;
 }
 
 const Forms: NextPage = () => {
@@ -31,24 +32,28 @@ const Forms: NextPage = () => {
   const onChange = (key: string, newField: State) => {
     const idx = formList.findIndex((form) => form.key === key);
 
-    setFormList(formList.splice(idx, 1, newField));
+    const tempList = [...formList];
+    tempList[idx] = newField;
+
+    setFormList(tempList);
   };
 
+  useEffect(() => {
+    console.log(formList);
+  }, [formList]);
+
   function addForm() {
-    const newData = {
-      ...formList,
-    };
-    newData.push({
-      key: uuid(),
-      id: "name",
-      type: "text",
-      required: false,
-      label: "",
-      placeholder: "",
-    });
+    const newData = [...formList];
+
+    newData.push(makeStructure("text"));
 
     setFormList(newData);
   }
+
+  const removeForm = (key: string) => {
+    const filteredFormList = formList.filter((form) => form.key !== key);
+    setFormList(filteredFormList);
+  };
 
   return (
     <Main>
@@ -56,23 +61,15 @@ const Forms: NextPage = () => {
 
       <FormSection>
         <FormList>
-          {/* map으로 돌아갈것임 */}
-          <FormItem>
-            <Form
-              state={{
-                key: "0",
-                id: "0",
-                type: "text",
-                required: true,
-                label: "이름",
-              }}
-              onChange={onChange}
-            />
-          </FormItem>
+          {formList.map((form) => (
+            <FormItem key={form.key}>
+              <Form state={form} onChange={onChange} onRemove={removeForm} />
+            </FormItem>
+          ))}
         </FormList>
       </FormSection>
 
-      <AddButton />
+      <AddButton onClick={addForm}>+ 추가</AddButton>
 
       <SaveSection />
     </Main>

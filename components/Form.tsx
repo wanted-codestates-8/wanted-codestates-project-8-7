@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { FormProps } from "pages/forms";
 import { makeStructure } from "utils/makeStructure";
 import Editor from "./Editor";
@@ -6,39 +6,65 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { CgArrowsVAlt } from "react-icons/cg";
 
-function Form({ state, onChange }: FormProps) {
+function Form({ state, onChange, onRemove }: FormProps) {
   const [value, setValue] = useState("");
-  console.log(value, "1212312312#");
-  function handleValue(value: any) {
-    console.log(value, "12312312312312411111");
+  const [label, setLabel] = useState("");
+  const [placeholder, setPlaceholder] = useState("");
+  const [checked, setChecked] = useState(state.required ? true : false);
+  const [selected, setSelected] = useState(state.type);
+
+  function handleValue(value: string) {
     setValue(value);
   }
+
+  const onPlaceholderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlaceholder(e.target.value);
+  };
+
+  const onLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLabel(e.target.value);
+  };
+
+  const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newField = makeStructure(e.target.value);
+    onChange(state.key, newField);
+  };
 
   return (
     <EditorWrapper>
       <EditorHeader>
-        <Select>
-          <option>텍스트</option>
-          <option>전화번호</option>
-          <option>주소</option>
-          <option>드롭다운</option>
-          <option>첨부파일</option>
-          <option>이용약관</option>
+        <Select value={selected} onChange={(e) => onSelectChange(e)}>
+          <option value="text">텍스트</option>
+          <option value="phone">전화번호</option>
+          <option value="address">주소</option>
+          <option value="select">드롭다운</option>
+          <option value="file">첨부파일</option>
+          <option value="agreement">이용약관</option>
         </Select>
-        <Label />
+        <Label value={label} onChange={onLabelChange} />
         <CheckBoxWrapper>
-          <CheckBox type="checkbox" />
+          <CheckBox
+            type="checkbox"
+            checked={checked}
+            onChange={() => setChecked(!checked)}
+          />
           <div>필수</div>
         </CheckBoxWrapper>
 
         <Drag>
           <CgArrowsVAlt></CgArrowsVAlt>
         </Drag>
-        <DelteBtn>
+        <DelteBtn onClick={() => onRemove(state.key)}>
           <AiOutlineClose size={23}></AiOutlineClose>
         </DelteBtn>
       </EditorHeader>
-      <PlaceHolder placeholder="플레이스홀더 예) '예) 11/10(토) 15:00'"></PlaceHolder>
+      {(state.type === "text" || state.type === "phone") && (
+        <PlaceHolder
+          value={placeholder}
+          placeholder="플레이스홀더 예) '예) 11/10(토) 15:00'"
+          onChange={onPlaceholderChange}
+        />
+      )}
       <Editor value={value} onChange={handleValue} />
     </EditorWrapper>
   );
@@ -123,4 +149,4 @@ const PlaceHolder = styled.input`
   border-bottom: solid 1px #eeeef0;
   font-size: 18px;
 `;
-export default memo(Form);
+export default Form;
