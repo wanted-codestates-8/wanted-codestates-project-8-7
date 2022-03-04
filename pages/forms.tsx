@@ -92,6 +92,35 @@ const Forms: NextPage = () => {
     );
   };
 
+  return (
+    <Main>
+      <InputForm onSubmit={(e) => e.preventDefault()}>
+        <Section>
+          <Title>제목*</Title>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          ></Input>
+        </Section>
+
+        <Section>
+          <Title>필드목록*</Title>
+          <FormList>
+            {formList.map((form) => (
+              <FormItem key={form.key}>
+                <Form state={form} onChange={onChange} onRemove={removeForm} />
+              </FormItem>
+            ))}
+          </FormList>
+        </Section>
+
+        <AddButton onClick={addForm}>필드 추가하기</AddButton>
+
+        <SaveButton onClick={saveForm}>저장 하기</SaveButton>
+      </InputForm>
+    </Main>
+
+
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -160,6 +189,7 @@ const Forms: NextPage = () => {
         </InputForm>
       </Main>
     </DragDropContext>
+
   );
 };
 
