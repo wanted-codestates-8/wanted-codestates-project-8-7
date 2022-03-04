@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import AgreementModalView from "./AgreementModalVIew";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface AgreementProps {
@@ -22,7 +23,9 @@ const Policy = ({ agreementContents }: AgreementProps) => {
           </PolicyLink>
         </Label>
       </Wrapper>
-      {agreementModal && <AgreementModalView />}
+      {agreementModal && (
+        <AgreementModalView agreementContents={agreementContents} />
+      )}
     </>
   );
 };
