@@ -7,9 +7,8 @@ import Attachments from "components/GeneratedForm/Attachments";
 import Policy from "components/GeneratedForm/Policy";
 import { useRouter } from "next/router";
 import DropDown from "components/GeneratedForm/DropDown";
-import { useSelector } from "react-redux";
-import { State } from "pages/forms";
-import { useAppSelector, selectForm } from "redux/slice";
+import { useAppSelector } from "redux/slice";
+import { AddrObj } from "types/address";
 
 const testForm = {
   title: "폼 예시",
@@ -31,8 +30,11 @@ const GeneratedForm = () => {
   const [form, setForm] = useState([]);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  const [isSubmitName, setIsSubmitName] = useState(false);
-  const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
+  const [selectedItem, setSelectedItem] = useState("");
+  const [imgData, setImgData] = useState<File>();
+  const [showAddress, setShowAddress] = useState();
+
+  // const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
 
   const data = useAppSelector((state) => state.form.forms);
   const formData = data.find((v) => v.id === id);
@@ -44,7 +46,6 @@ const GeneratedForm = () => {
 
   const [inputState, setInputState] = useState(false);
   const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("changeNumber 123213");
     checkNum();
     if (e.target.value.length === 3 || e.target.value.length === 8) {
       setNumber(e.target.value + "-");
@@ -103,25 +104,39 @@ const GeneratedForm = () => {
   });
 
   const AddressComponent = formData?.formList.map((v) => {
-    return v.type === "address" ? <Address label={addressLabel} /> : null;
+    return v.type === "address" ? (
+      <Address
+        label={addressLabel}
+        showAddress={showAddress}
+        setShowAddress={setShowAddress}
+      />
+    ) : null;
   });
 
   const DropDownComponent = formData?.formList.map((v) => {
-    return v.type === "address" ? (
-      <DropDown selectOptions={selectOptions} />
+    return v.type === "select" ? (
+      <DropDown
+        selectOptions={selectOptions}
+        setSelectedItem={setSelectedItem}
+      />
     ) : null;
   });
 
   const attachmentsComponent = formData?.formList.map((v) => {
-    return v.type === "file" ? <Attachments /> : null;
+    return v.type === "file" ? <Attachments setImgData={setImgData} /> : null;
   });
 
+  const agreementContents = formData?.formList.find(
+    (v) => v.type === "agreement"
+  )?.contents;
   const agreementComponent = formData?.formList.map((v) => {
-    return v.type === "agreement" ? <Policy /> : null;
+    return v.type === "agreement" ? (
+      <Policy agreementContents={agreementContents} />
+    ) : null;
   });
 
   const onSubmit = () => {
-    console.log(name, number);
+    console.log(name, number, selectedItem, showAddress, imgData);
   };
 
   return (
@@ -165,6 +180,7 @@ const SubmitWrap = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
+  background: #e9e9e9;
 `;
 
 const Submit = styled.button`

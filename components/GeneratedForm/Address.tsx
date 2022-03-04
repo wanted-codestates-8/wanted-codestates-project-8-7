@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { AddrObj } from "types/address";
 import ViewPostCode from "components/PostCodeModal";
 
-interface addressProps {
+interface AddressProps {
   label: string | undefined;
+  showAddress: string | undefined;
+  setShowAddress: Dispatch<SetStateAction<any>>;
 }
 
-const Address = ({ label }: addressProps) => {
+const Address = ({ label, showAddress, setShowAddress }: AddressProps) => {
   const [postcodeModal, setPostcodeModal] = useState(false);
   const [addr, setAddr] = useState<AddrObj>();
 
   const buildAddr = () => {
     if (!addr) return "";
     const bldgName = addr.buildingName === "" ? "" : ` (${addr.buildingName})`;
+    showAddress = `(${addr.zonecode}) ${addr.address}${bldgName}, ${addr.addressDetail}`;
+    setShowAddress(showAddress);
     return `(${addr.zonecode}) ${addr.address}${bldgName}, ${addr.addressDetail}`;
   };
 
@@ -24,7 +28,11 @@ const Address = ({ label }: addressProps) => {
         <Input onClick={() => setPostcodeModal(true)} value={buildAddr()} />
       </Wrapper>
       {postcodeModal && (
-        <ViewPostCode setOpen={setPostcodeModal} setAddr={setAddr} />
+        <ViewPostCode
+          setOpen={setPostcodeModal}
+          setAddr={setAddr}
+          setShowAddress={setShowAddress}
+        />
       )}
     </>
   );

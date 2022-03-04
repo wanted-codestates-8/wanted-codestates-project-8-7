@@ -1,20 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
-const Policy = () => {
+interface AgreementProps {
+  agreementContents: string | undefined;
+}
+
+const Policy = ({ agreementContents }: AgreementProps) => {
+  const [agreementModal, setagreementModal] = useState(false);
+
   return (
-    <Wrapper>
-      <Label>
-        <Items>
-          <CheckBtn type="checkbox"></CheckBtn>
-          <Text>개인정보 수집 약관 동의 (필수)</Text>
-        </Items>
-        <PolicyLink>
-          <MdKeyboardArrowRight size={24} />
-        </PolicyLink>
-      </Label>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Label>
+          <Items>
+            <CheckBtn type="checkbox"></CheckBtn>
+            <Text>개인정보 수집 약관 동의 (필수)</Text>
+          </Items>
+          <PolicyLink>
+            <MdKeyboardArrowRight size={24} />
+          </PolicyLink>
+        </Label>
+      </Wrapper>
+      {agreementModal && <AgreementModalView />}
+    </>
   );
 };
 const Wrapper = styled.div`

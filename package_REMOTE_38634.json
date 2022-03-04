@@ -24,7 +24,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.2.1",
     "@types/node": "17.0.21",
     "@types/react": "17.0.39",
     "@types/react-beautiful-dnd": "^13.1.2",

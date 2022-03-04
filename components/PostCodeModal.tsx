@@ -6,9 +6,14 @@ import { AddrObj } from "types/address";
 interface PostCodeModalProps {
   setOpen: Dispatch<SetStateAction<boolean>>;
   setAddr: Dispatch<SetStateAction<any>>;
+  setShowAddress: Dispatch<SetStateAction<any>>;
 }
 
-const PostCodeModal = ({ setOpen, setAddr }: PostCodeModalProps) => {
+const PostCodeModal = ({
+  setOpen,
+  setAddr,
+  setShowAddress,
+}: PostCodeModalProps) => {
   let addr = useRef<AddrObj>();
 
   // 상세주소 모달
@@ -23,6 +28,10 @@ const PostCodeModal = ({ setOpen, setAddr }: PostCodeModalProps) => {
 
       setOpen(false);
       setAddr({
+        ...addr.current,
+        addressDetail: target.value,
+      });
+      setShowAddress({
         ...addr.current,
         addressDetail: target.value,
       });

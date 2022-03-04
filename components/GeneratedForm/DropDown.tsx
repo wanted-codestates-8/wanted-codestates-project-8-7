@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 
-interface Test {
+interface CssProps {
   isShow: boolean;
 }
 
-const DropDown = ({ selectOptions }: any) => {
+const DropDown = ({ selectOptions, setSelectedItem }: any) => {
   const [isShow, setIsShow] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("");
+  const [itemState, setItemState] = useState("");
 
   const dropdownRef = useRef<any>();
 
@@ -23,6 +23,7 @@ const DropDown = ({ selectOptions }: any) => {
   };
 
   const onClickSelect = (item: any) => {
+    setItemState(item);
     setSelectedItem(item);
   };
 
@@ -35,7 +36,7 @@ const DropDown = ({ selectOptions }: any) => {
       <Text>옵션 1</Text>
       <DropDownWrapper>
         <DropDownBtn isShow={isShow} onClick={onClickShow} ref={dropdownRef}>
-          <DropDownText>{selectedItem}</DropDownText>
+          <DropDownText>{itemState}</DropDownText>
           {isShow ? (
             <RiArrowUpSLine size={24} />
           ) : (
@@ -68,7 +69,7 @@ const Text = styled.div`
 
 const DropDownText = styled.div``;
 
-const DropDownBtn = styled.div<Test>`
+const DropDownBtn = styled.div<CssProps>`
   margin-top: 10px;
   background-color: #e9e9e9;
   border-style: none;
@@ -83,7 +84,7 @@ const DropDownBtn = styled.div<Test>`
   justify-content: space-between;
 `;
 
-const DropdownContent = styled.div<Test>`
+const DropdownContent = styled.div<CssProps>`
   position: absolute;
   background-color: #f9f9f9;
   width: 400px;
