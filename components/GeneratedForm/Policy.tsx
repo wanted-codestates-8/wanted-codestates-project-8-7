@@ -37,6 +37,7 @@ const Items = styled.div`
 const CheckBtn = styled.input`
   width: 20px;
   height: 20px;
+  border-radius: 50%;
 `;
 
 const Text = styled.div``;

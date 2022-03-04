@@ -1,35 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 interface PhoneNumProps {
   label: string;
+  onChangeNumber: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  number: string;
+  setNumber: any;
+  inputState: boolean;
 }
 
-const PhoneNum = ({ label }: PhoneNumProps) => {
-  const [inputState, setInputState] = useState(false);
-  const [number, setNumber] = useState("");
-  const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    checkNum();
-    if (e.target.value.length === 3 || e.target.value.length === 8) {
-      setNumber(e.target.value + "-");
-    } else {
-      setNumber(e.target.value);
-    }
-  };
-
-  useEffect(() => {
-    setNumber(number);
-  }, [number]);
-
-  function checkNum() {
-    const numRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{3}$/;
-    if (number.match(numRegex)) {
-      setInputState(true);
-    } else {
-      setInputState(false);
-    }
-  }
-
+const PhoneNum = ({
+  label,
+  onChangeNumber,
+  number,
+  setNumber,
+  inputState,
+}: PhoneNumProps) => {
   return (
     <Wrapper>
       <Text> 휴대폰 번호 {label}</Text>{" "}
