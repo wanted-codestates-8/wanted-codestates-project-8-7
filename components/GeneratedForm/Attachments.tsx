@@ -80,7 +80,9 @@ const Wrapper = styled.div`
 `;
 
 const Text = styled.div`
+  font-size: 14px;
   font-weight: 800;
+  margin-left: 5px;
 `;
 
 const AttachBox = styled.div`
@@ -89,12 +91,12 @@ const AttachBox = styled.div`
   background-color: #e9e9e9;
   width: 360px;
   height: 250px;
-  cursor: pointer;
   margin: 8px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  cursor: pointer;
 `;
 
 const Label = styled.input`
