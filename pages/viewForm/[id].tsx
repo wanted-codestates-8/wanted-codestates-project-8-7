@@ -77,7 +77,6 @@ const GeneratedForm = () => {
   };
 
   return (
-
     <FormWrapper>
       <Header> Title</Header>
       <Name
@@ -97,7 +96,9 @@ const GeneratedForm = () => {
       <DropDown options={options} />
       <Attachments setImgData={setImgData} />
       <Policy />
-      <Submit onClick={onSubmit}> 제출하기</Submit>
+      <SubmitWrap>
+        <Submit onClick={onSubmit}> 제출하기</Submit>
+      </SubmitWrap>
     </FormWrapper>
   );
 };
