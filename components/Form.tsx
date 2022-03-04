@@ -75,7 +75,11 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
         </Select>
         <Label value={label} onChange={onLabelChange} />
         <CheckBoxWrapper>
-          <CheckBox type="checkbox" checked={checked} onChange={() => setChecked(!checked)} />
+          <CheckBox
+            type="checkbox"
+            checked={checked}
+            onChange={() => setChecked(!checked)}
+          />
           <div>필수</div>
         </CheckBoxWrapper>
 
@@ -87,7 +91,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
         </DelteBtn>
       </EditorHeader>
       {(state.type === "text" || state.type === "phone") && (
-        <PlaceHolder
+        <Input
           value={placeholder}
           placeholder="플레이스홀더 예) '예) 11/10(토) 15:00'"
           onChange={onPlaceholderChange}
@@ -108,7 +112,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
               : ""}
           </TagsWrapper>
 
-          <PlaceHolder
+          <Input
             placeholder="옵션값을 입력하세요"
             onKeyUp={onSelectAdd}
             value={tagInput}
@@ -116,7 +120,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
           />
         </SelectWrapper>
       ) : (
-        ""
+        <></>
       )}
       <Editor value={value} onChange={handleValue} />
     </EditorWrapper>
@@ -194,7 +198,7 @@ const DelteBtn = styled.div`
   cursor: pointer;
 `;
 
-const PlaceHolder = styled.input`
+const Input = styled.input`
   width: 100%;
   height: 45px;
   border: none;

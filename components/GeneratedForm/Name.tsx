@@ -45,7 +45,6 @@ const Input = styled.input`
 `;
 
 const Warning = styled.div`
-  /* display: ${(props) => (props ? "block" : "none")} */
   color: red;
   font-weight: lighter;
   font-size: 12px;
