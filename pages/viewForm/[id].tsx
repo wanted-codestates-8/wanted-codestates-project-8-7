@@ -7,6 +7,7 @@ import Options from "components/GeneratedForm/Options";
 import Attachments from "components/GeneratedForm/Attachments";
 import Policy from "components/GeneratedForm/Policy";
 import { useRouter } from "next/router";
+import DropDown from "components/GeneratedForm/DropDown";
 
 export interface State {
   idx: number;
@@ -56,14 +57,14 @@ const GeneratedForm = () => {
 
   return (
     <FormWrapper>
-      <Header> Title</Header>{" "}
+      <Header> Title</Header>
       <Name
         label={testForm.label}
         placeholder={testForm.placeholder ? testForm.placeholder : ""}
         onChangeName={onChangeName}
         name={name}
-      />{" "}
-      <PhoneNum label={testForm.label} /> <Address /> <Options />{" "}
+      />
+      <PhoneNum label={testForm.label} /> <Address /> <DropDown />
       <Attachments /> <Policy /> <Submit> 제출하기</Submit>
     </FormWrapper>
   );
