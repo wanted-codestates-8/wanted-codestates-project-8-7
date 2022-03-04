@@ -17,7 +17,10 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
+<<<<<<< HEAD
+=======
     "react-quill": "^1.3.5",
+>>>>>>> 926455f241ed301e71e98f4bc84b09830536b04c
     "react-redux": "^7.2.6",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.3",
