@@ -7,20 +7,16 @@ const Header = () => {
       <HeaderWrapper>
         <LogoName>datable</LogoName>
         <CreateFormBtn />
-        <ViewResultBtn />
       </HeaderWrapper>
-
     </>
   );
 
 };
 
 const HeaderWrapper = styled.div`
-  /* background-color: aliceblue; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  /* border-bottom: 1px solid black; */
 `
 
 const LogoName = styled.div`
@@ -74,14 +70,6 @@ const CreateFormBtn = styled.button`
   :hover{
   transform: translateZ(-25px) rotateX(-90deg);
 }
-`
-
-const ViewResultBtn = styled(CreateFormBtn)`
-  margin: 45px 95px 35px 35px;
-
-  :before,:after {
-    content: "VIEW RESULT";
-  }
 `
 
 export default Header;
