@@ -17,7 +17,14 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
 
   function handleValue(value: string) {
     setValue(value);
-    const newField = { ...state, description: value };
+    let newField;
+
+    if (state.type === "agreement") {
+      newField = { ...state, contents: value };
+    } else {
+      newField = { ...state, description: value };
+    }
+
     onChange(state.key, newField);
   }
 
@@ -68,11 +75,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
         </Select>
         <Label value={label} onChange={onLabelChange} />
         <CheckBoxWrapper>
-          <CheckBox
-            type="checkbox"
-            checked={checked}
-            onChange={() => setChecked(!checked)}
-          />
+          <CheckBox type="checkbox" checked={checked} onChange={() => setChecked(!checked)} />
           <div>필수</div>
         </CheckBoxWrapper>
 

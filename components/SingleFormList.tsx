@@ -1,20 +1,33 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FaWpforms } from 'react-icons/fa'
+import React from "react";
+import styled from "styled-components";
+import { FaWpforms } from "react-icons/fa";
+import { useAppSelector, selectForm } from "redux/slice";
+import { useRouter } from "next/router";
 
-const SingleFormList= () => {
-  const singleform = ["rabbit", "bear", "hamster", "dragon", "dog"];
+const SingleFormList = () => {
+  const forms = useAppSelector(selectForm).forms;
+  const router = useRouter();
 
   return (
     <>
-      {singleform.map((el, idx) => {
+      {forms.map((el, idx) => {
         return (
-        <SingleFormListWrapper key={idx}>
-          <ViewResultBtn />
-          <FaWpforms size="7rem" style={{ margin: "1rem 5rem 1rem 5rem" }} />
-          <div style={{ fontSize: "3rem" }}>{el}</div>          
-        </SingleFormListWrapper>
-        )
+          <SingleFormListWrapper
+            key={idx}
+            onClick={() => {
+              router.push(`/viewForm/${el.id}`);
+            }}
+          >
+            <ViewResultBtn
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/dataList/${el.id}/0`);
+              }}
+            />
+            <FaWpforms size="7rem" style={{ margin: "1rem 5rem 1rem 5rem" }} />
+            <div style={{ fontSize: "3rem" }}>{el.title}</div>
+          </SingleFormListWrapper>
+        );
       })}
     </>
   );
@@ -26,7 +39,7 @@ const SingleFormListWrapper = styled.div`
   width: 80%;
   min-height: 15rem;
   margin: 4rem 0rem 2rem 0rem;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 
   position: relative;
   left: 50%;
@@ -35,14 +48,17 @@ const SingleFormListWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 
   flex: 1 1 0;
 
   :hover {
     /* background-color: #a0c6f1; */
-    box-shadow: rgba(46, 124, 240, 0.4) 5px 5px, rgba(46, 124, 240, 0.3) 10px 10px, rgba(46, 124, 240, 0.2) 15px 15px, rgba(46, 124, 240, 0.1) 20px 20px, rgba(46, 124, 240, 0.05) 25px 25px;
+    box-shadow: rgba(46, 124, 240, 0.4) 5px 5px, rgba(46, 124, 240, 0.3) 10px 10px,
+      rgba(46, 124, 240, 0.2) 15px 15px, rgba(46, 124, 240, 0.1) 20px 20px,
+      rgba(46, 124, 240, 0.05) 25px 25px;
   }
-`
+`;
 
 const ViewResultBtn = styled.button`
   position: relative;
@@ -56,10 +72,11 @@ const ViewResultBtn = styled.button`
   letter-spacing: 1px;
   transform-style: preserve-3d;
   transform: translateZ(-25px);
-  transition: transform .25s;
-  font-family: 'Montserrat', sans-serif;
+  transition: transform 0.25s;
+  font-family: "Montserrat", sans-serif;
 
-  :before,:after {
+  :before,
+  :after {
     position: absolute;
     content: "VIEW RESULT";
     height: 55px;
@@ -82,9 +99,9 @@ const ViewResultBtn = styled.button`
     transform: rotateX(90deg) translateZ(25px);
   }
 
-  :hover{
-  transform: translateZ(-25px) rotateX(-90deg);
-}
-`
+  :hover {
+    transform: translateZ(-25px) rotateX(-90deg);
+  }
+`;
 
 export default SingleFormList;

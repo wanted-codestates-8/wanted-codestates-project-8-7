@@ -1,23 +1,35 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <>
       <HeaderWrapper>
-        <LogoName>datable</LogoName>
-        <CreateFormBtn />
+        <LogoName
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          datable
+        </LogoName>
+        <CreateFormBtn
+          onClick={() => {
+            router.push("/forms");
+          }}
+        />
       </HeaderWrapper>
     </>
   );
-
 };
 
 const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-`
+`;
 
 const LogoName = styled.div`
   font-size: 7rem;
@@ -26,8 +38,9 @@ const LogoName = styled.div`
   width: 50rem;
   height: 10rem;
   text-align: center;
-  font-family: 'Ubuntu', sans-serif;
-`
+  font-family: "Ubuntu", sans-serif;
+  cursor: pointer;
+`;
 
 const CreateFormBtn = styled.button`
   position: relative;
@@ -41,10 +54,11 @@ const CreateFormBtn = styled.button`
   letter-spacing: 1px;
   transform-style: preserve-3d;
   transform: translateZ(-25px);
-  transition: transform .25s;
-  font-family: 'Montserrat', sans-serif;
+  transition: transform 0.25s;
+  font-family: "Montserrat", sans-serif;
 
-  :before,:after {
+  :before,
+  :after {
     position: absolute;
     content: "CREATE FORM";
     height: 55px;
@@ -67,9 +81,9 @@ const CreateFormBtn = styled.button`
     transform: rotateX(90deg) translateZ(25px);
   }
 
-  :hover{
-  transform: translateZ(-25px) rotateX(-90deg);
-}
-`
+  :hover {
+    transform: translateZ(-25px) rotateX(-90deg);
+  }
+`;
 
 export default Header;

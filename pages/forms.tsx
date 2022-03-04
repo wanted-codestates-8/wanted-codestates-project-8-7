@@ -132,10 +132,7 @@ const Forms: NextPage = () => {
         <InputForm onSubmit={(e) => e.preventDefault()}>
           <Section>
             <Title>제목*</Title>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            ></Input>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)}></Input>
           </Section>
 
           <Section>
@@ -144,16 +141,9 @@ const Forms: NextPage = () => {
               {(provided) => (
                 <FormList {...provided.droppableProps} ref={provided.innerRef}>
                   {formList.map((form, index) => (
-                    <Draggable
-                      key={form.key}
-                      draggableId={form.key}
-                      index={index}
-                    >
+                    <Draggable key={form.key} draggableId={form.key} index={index}>
                       {(provided) => (
-                        <FormItem
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                        >
+                        <FormItem ref={provided.innerRef} {...provided.draggableProps}>
                           <Form
                             state={form}
                             onChange={onChange}
@@ -174,11 +164,15 @@ const Forms: NextPage = () => {
             필드 추가하기
           </AddButton>
           <SaveButtonWrapper>
-            <SaveButton
-              type="button"
-              onClick={saveForm}
-              className={!submitState ? "inactive" : ""}
+            <GoBackButton
+              onClick={() => {
+                router.push("/");
+              }}
             >
+              뒤로 가기
+            </GoBackButton>
+
+            <SaveButton type="button" onClick={saveForm} className={!submitState ? "inactive" : ""}>
               저장 하기
             </SaveButton>
           </SaveButtonWrapper>
@@ -234,6 +228,10 @@ const SaveButton = styled.button`
   &.inactive {
     background-color: ${({ theme }) => theme.colors.grayTwo};
   }
+`;
+
+const GoBackButton = styled(SaveButton)`
+  margin-right: 2rem;
 `;
 
 export default Forms;

@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
-import FormList from "./FormList";
+import FormList from "../components/FormList";
 
 const Home: NextPage = () => {
   return (
-  <Main>
-    <FormList />
-  </Main>
-  ) 
+    <Main>
+      <FormList />
+    </Main>
+  );
 };
 
 export const Main = styled.main`

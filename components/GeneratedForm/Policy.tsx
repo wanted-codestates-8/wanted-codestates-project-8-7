@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import AgreementModalView from "./AgreementModalVIew";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 interface AgreementProps {
+  agreement: boolean;
+  setAgreement: Dispatch<SetStateAction<boolean>>;
   agreementContents: string | undefined;
 }
 
-const Policy = ({ agreementContents }: AgreementProps) => {
+const Policy = ({ agreement, setAgreement, agreementContents }: AgreementProps) => {
   const [agreementModal, setagreementModal] = useState(false);
 
   return (
@@ -15,7 +17,11 @@ const Policy = ({ agreementContents }: AgreementProps) => {
       <Wrapper>
         <Label>
           <Items>
-            <CheckBtn type="checkbox"></CheckBtn>
+            <CheckBtn
+              checked={agreement}
+              onChange={() => setAgreement((prev) => !prev)}
+              type="checkbox"
+            ></CheckBtn>
             <Text>개인정보 수집 약관 동의 (필수)</Text>
           </Items>
           <PolicyLink>
@@ -23,9 +29,7 @@ const Policy = ({ agreementContents }: AgreementProps) => {
           </PolicyLink>
         </Label>
       </Wrapper>
-      {agreementModal && (
-        <AgreementModalView agreementContents={agreementContents} />
-      )}
+      {agreementModal && <AgreementModalView agreementContents={agreementContents} />}
     </>
   );
 };

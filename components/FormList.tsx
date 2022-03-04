@@ -1,17 +1,15 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
-import Header from "../components/Header";
-import SingleFormList from "../components/SingleFormList";
-
-
+import Header from "./Header";
+import SingleFormList from "./SingleFormList";
 
 const FormList: NextPage = () => {
   return (
-  <FormListWrapper>
-    <Header />
-    <SingleFormList />
-  </FormListWrapper>
-  ) 
+    <FormListWrapper>
+      <Header />
+      <SingleFormList />
+    </FormListWrapper>
+  );
 };
 
 const FormListWrapper = styled.main`

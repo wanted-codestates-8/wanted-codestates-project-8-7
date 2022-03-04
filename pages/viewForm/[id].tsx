@@ -8,31 +8,20 @@ import Policy from "components/GeneratedForm/Policy";
 import { useRouter } from "next/router";
 import DropDown from "components/GeneratedForm/DropDown";
 import { useAppSelector } from "redux/slice";
-import { AddrObj } from "types/address";
-
-const testForm = {
-  title: "폼 예시",
-  data: {
-    key: "1",
-    id: "name",
-    type: "text",
-    required: true,
-    label: "이름",
-    placeholder: "주민등록상 이름 입력",
-  },
-};
-
-const options = ["XXL", "XL", "L", "s"];
+import { useDispatch } from "react-redux";
+import { addData } from "redux/slice";
+import { Data } from "redux/slice";
 
 const GeneratedForm = () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
-  const [form, setForm] = useState([]);
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
-  const [selectedItem, setSelectedItem] = useState("");
-  const [imgData, setImgData] = useState<File>();
-  const [showAddress, setShowAddress] = useState();
+  const [text, setName] = useState("");
+  const [phone, setNumber] = useState("");
+  const [select, setSelectedItem] = useState("");
+  const [file, setImgData] = useState<string>("");
+  const [address, setShowAddress] = useState("");
+  const [agreement, setAgreement] = useState(false);
 
   // const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
 
@@ -55,12 +44,12 @@ const GeneratedForm = () => {
   };
 
   useEffect(() => {
-    setNumber(number);
-  }, [number]);
+    setNumber(phone);
+  }, [phone]);
 
   function checkNum() {
     const numRegex = /^[0-9]{3}[-]+[0-9]{4}[-]+[0-9]{3}$/;
-    if (number.match(numRegex)) {
+    if (phone.match(numRegex)) {
       setInputState(true);
     } else {
       setInputState(false);
@@ -68,25 +57,20 @@ const GeneratedForm = () => {
   }
 
   const textLabel = formData?.formList.find((v) => v.type === "text")?.label;
+  const textPlaceholder = formData?.formList.find((v) => v.type === "text")?.placeholder;
   const phoneLabel = formData?.formList.find((v) => v.type === "phone")?.label;
-  const addressLabel = formData?.formList.find(
-    (v) => v.type === "address"
-  )?.label;
-  const selectLabel = formData?.formList.find(
-    (v) => v.type === "select"
-  )?.label;
+  const addressLabel = formData?.formList.find((v) => v.type === "address")?.label;
+  const selectLabel = formData?.formList.find((v) => v.type === "select")?.label;
 
-  const selectOptions = formData?.formList.find(
-    (v) => v.type === "select"
-  )?.options;
+  const selectOptions = formData?.formList.find((v) => v.type === "select")?.options;
 
   const TextComponent = formData?.formList.map((v) => {
     return v.type === "text" ? (
       <Name
         label={textLabel}
-        placeholder={testForm.data.placeholder ? testForm.data.placeholder : ""}
+        placeholder={textPlaceholder ? textPlaceholder : ""}
         onChangeName={onChangeName}
-        name={name}
+        name={text}
       />
     ) : null;
   });
@@ -96,7 +80,7 @@ const GeneratedForm = () => {
       <PhoneNum
         label={phoneLabel}
         onChangeNumber={onChangeNumber}
-        number={number}
+        number={phone}
         setNumber={setNumber}
         inputState={inputState}
       />
@@ -105,20 +89,13 @@ const GeneratedForm = () => {
 
   const AddressComponent = formData?.formList.map((v) => {
     return v.type === "address" ? (
-      <Address
-        label={addressLabel}
-        showAddress={showAddress}
-        setShowAddress={setShowAddress}
-      />
+      <Address label={addressLabel} showAddress={address} setShowAddress={setShowAddress} />
     ) : null;
   });
 
   const DropDownComponent = formData?.formList.map((v) => {
     return v.type === "select" ? (
-      <DropDown
-        selectOptions={selectOptions}
-        setSelectedItem={setSelectedItem}
-      />
+      <DropDown selectOptions={selectOptions} setSelectedItem={setSelectedItem} />
     ) : null;
   });
 
@@ -126,61 +103,86 @@ const GeneratedForm = () => {
     return v.type === "file" ? <Attachments setImgData={setImgData} /> : null;
   });
 
-  const agreementContents = formData?.formList.find(
-    (v) => v.type === "agreement"
-  )?.contents;
+  const agreementContents = formData?.formList.find((v) => v.type === "agreement")?.contents;
   const agreementComponent = formData?.formList.map((v) => {
     return v.type === "agreement" ? (
-      <Policy agreementContents={agreementContents} />
+      <Policy
+        agreement={agreement}
+        setAgreement={setAgreement}
+        agreementContents={agreementContents}
+      />
     ) : null;
   });
 
   const onSubmit = () => {
-    console.log(name, number, selectedItem, showAddress, imgData);
+    //todo 조건부 비활성화
+
+    const dataset = {
+      text,
+      phone,
+      select,
+      file,
+      agreement,
+      address,
+    };
+
+    const combinedData = {};
+
+    formData?.formList.forEach((form) => {
+      const value = dataset[form.type];
+
+      combinedData[form.label] = {
+        type: form.type,
+        value,
+      };
+    });
+
+    dispatch(
+      addData({
+        id,
+        title: formData!.title,
+        dataList: [combinedData],
+      })
+    );
   };
 
   return (
     <FormWrapper>
-      <Header> Title</Header>
+      <Header>{formData?.title}</Header>
       {TextComponent}
       {PhoneComponent}
       {AddressComponent}
       {DropDownComponent}
       {attachmentsComponent}
       {agreementComponent}
-      <Submit onClick={onSubmit}> 제출하기</Submit>
+      <SubmitWrap>
+        <Submit onClick={onSubmit}> 제출하기</Submit>
+        <GoBack
+          className="go-back"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          {"<"}
+        </GoBack>
+      </SubmitWrap>
     </FormWrapper>
   );
 };
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
   align-items: center;
   height: 100vh;
-  /* padding: 1rem 1.5rem 2.5rem; */
 `;
 
-const Header = styled.div`
+const Header = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 56px;
-  font-size: 16px;
-`;
-
-const SubmitWrap = styled.div`
-  margin-top: auto;
-  position: sticky;
-  bottom: 0;
-  padding: 10px;
-  box-shadow: 0 -2px 20px 0 rgba(14, 67, 97, 0.06),
-    0 1px 0 0 rgba(14, 67, 97, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 400px;
-  background: #e9e9e9;
+  /* font-size: 16px; */
+  margin-top: 2.5rem;
 `;
 
 const Submit = styled.button`
@@ -191,5 +193,35 @@ const Submit = styled.button`
   color: white;
   border-radius: 10px;
 `;
+
+const SubmitWrap = styled.div`
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  padding: 10px;
+  box-shadow: 0 -2px 20px 0 rgba(14, 67, 97, 0.06), 0 1px 0 0 rgba(14, 67, 97, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: white;
+
+  & .go-back {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    font-size: 3rem;
+    border: 1px solid gray;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+`;
+
+const GoBack = styled.button``;
 
 export default GeneratedForm;

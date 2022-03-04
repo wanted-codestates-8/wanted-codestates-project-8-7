@@ -9,11 +9,7 @@ interface PostCodeModalProps {
   setShowAddress: Dispatch<SetStateAction<any>>;
 }
 
-const PostCodeModal = ({
-  setOpen,
-  setAddr,
-  setShowAddress,
-}: PostCodeModalProps) => {
+const PostCodeModal = ({ setOpen, setAddr, setShowAddress }: PostCodeModalProps) => {
   let addr = useRef<AddrObj>();
 
   // 상세주소 모달
@@ -22,9 +18,7 @@ const PostCodeModal = ({
     const wrapper = document.getElementById("modal-content") as HTMLElement;
 
     const handleConfirm = () => {
-      const target = document.getElementById(
-        "detail-input"
-      ) as HTMLInputElement;
+      const target = document.getElementById("detail-input") as HTMLInputElement;
 
       setOpen(false);
       setAddr({
@@ -81,6 +75,7 @@ const BackDrop = styled.div`
   width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
+  z-index: 2;
 `;
 
 const Content = styled.div`
@@ -91,6 +86,7 @@ const Content = styled.div`
   height: 60rem;
   transform: translate(-50%, -50%);
   background-color: white;
+  z-index: 2;
 `;
 
 const CurrentAddr = styled.div`
