@@ -75,13 +75,16 @@ const Forms: NextPage = () => {
       })
     );
   };
-
+  console.log(formList);
   return (
     <Main>
       <InputForm onSubmit={(e) => e.preventDefault()}>
         <Section>
           <Title>제목*</Title>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)}></Input>
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          ></Input>
         </Section>
 
         <Section>
