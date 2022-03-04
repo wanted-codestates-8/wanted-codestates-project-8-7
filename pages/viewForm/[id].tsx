@@ -60,6 +60,9 @@ const GeneratedForm = () => {
     (v) => v.type === "text"
   )?.placeholder;
   const phoneLabel = formData?.formList.find((v) => v.type === "phone")?.label;
+  const phonePlaceholder = formData?.formList.find(
+    (v) => v.type === "phone"
+  )?.placeholder;
   const addressLabel = formData?.formList.find(
     (v) => v.type === "address"
   )?.label;
@@ -86,6 +89,7 @@ const GeneratedForm = () => {
     return v.type === "phone" ? (
       <PhoneNum
         label={phoneLabel}
+        placeholder={phonePlaceholder ? phonePlaceholder : ""}
         onChangeNumber={onChangeNumber}
         number={phone}
         setNumber={setNumber}
@@ -119,7 +123,7 @@ const GeneratedForm = () => {
 
   const agreementContents = formData?.formList.find(
     (v) => v.type === "agreement"
-  )?.contents;
+  )?.contents as string;
   const agreementComponent = formData?.formList.map((v) => {
     return v.type === "agreement" ? (
       <Policy
@@ -160,6 +164,9 @@ const GeneratedForm = () => {
         dataList: [combinedData],
       })
     );
+
+    alert("제출되었습니다.");
+    router.push("/");
   };
 
   return (

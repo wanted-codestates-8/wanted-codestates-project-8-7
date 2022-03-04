@@ -22,7 +22,7 @@ const Name = ({ label, placeholder, onChangeName, name }: NameProps) => {
         value={name}
       />
       {name === "" && inputState ? (
-        <Warning>이름 항목은 필수 정보입니다.</Warning>
+        <Warning>{label} 항목은 필수 정보입니다.</Warning>
       ) : null}
     </Wrapper>
   );
@@ -45,7 +45,6 @@ const Input = styled.input`
 `;
 
 const Warning = styled.div`
-  /* display: ${(props) => (props ? "block" : "none")} */
   color: red;
   font-weight: lighter;
   font-size: 12px;

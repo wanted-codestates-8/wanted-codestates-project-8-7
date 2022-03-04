@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface PhoneNumProps {
   label: string | undefined;
+  placeholder: string;
   onChangeNumber: (e: React.ChangeEvent<HTMLInputElement>) => void;
   number: string;
   setNumber: any;
@@ -11,6 +12,7 @@ interface PhoneNumProps {
 
 const PhoneNum = ({
   label,
+  placeholder,
   onChangeNumber,
   number,
   setNumber,
@@ -21,6 +23,7 @@ const PhoneNum = ({
       <Text> {label}</Text>{" "}
       <Input
         type="text"
+        placeholder={placeholder}
         onChange={onChangeNumber}
         value={number}
         onKeyDown={(e) =>
@@ -54,7 +57,6 @@ const Input = styled.input`
 `;
 
 const Warning = styled.div`
-  /* display: ${(props) => (props ? "block" : "none")} */
   color: red;
   font-weight: lighter;
   font-size: 12px;

@@ -6,12 +6,16 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 interface AgreementProps {
   agreement: boolean;
   setAgreement: Dispatch<SetStateAction<boolean>>;
-  agreementContents: string | undefined;
+  agreementContents: string;
 }
 
-const Policy = ({ agreement, setAgreement, agreementContents }: AgreementProps) => {
-  const [agreementModal, setagreementModal] = useState(false);
-
+const Policy = ({
+  agreement,
+  setAgreement,
+  agreementContents,
+}: AgreementProps) => {
+  const [agreementModal, setAgreementModal] = useState(false);
+  console.log(agreementModal);
   return (
     <>
       <Wrapper>
@@ -25,11 +29,19 @@ const Policy = ({ agreement, setAgreement, agreementContents }: AgreementProps) 
             <Text>개인정보 수집 약관 동의 (필수)</Text>
           </Items>
           <PolicyLink>
-            <MdKeyboardArrowRight size={24} />
+            <MdKeyboardArrowRight
+              size={24}
+              onClick={() => setAgreementModal(!agreementModal)}
+            />
           </PolicyLink>
         </Label>
       </Wrapper>
-      {agreementModal && <AgreementModalView agreementContents={agreementContents} />}
+      {agreementModal && (
+        <AgreementModalView
+          agreementContents={agreementContents}
+          setAgreementModal={setAgreementModal}
+        />
+      )}
     </>
   );
 };

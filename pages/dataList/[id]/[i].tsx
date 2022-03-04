@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FcTodoList } from "react-icons/fc";
 import { useAppSelector, selectForm } from "redux/slice";
 import Header from "components/Header";
-import { Fragment } from "react";
+import { Fragment, ReactElement } from "react";
 
 const DataList: NextPage = () => {
   const router = useRouter();
@@ -16,11 +15,15 @@ const DataList: NextPage = () => {
   const showForms = () => {
     const result = selectedForm!.dataList[i];
     return Object.keys(result).map((v) => {
-      let value = "";
+      let value: ReactElement;
       if (result[v].type === "agreement") {
-        value = result[v].value ? "동의함" : "동의안함";
+        value = (
+          <InputValue>{result[v].value ? "동의함" : "동의안함"}</InputValue>
+        );
+      } else if (result[v].type === "file") {
+        value = <Image src={result[v].value as string} alt="image" />;
       } else {
-        value = result[v].value as string;
+        value = <InputValue>{result[v].value}</InputValue>;
       }
 
       return (
@@ -29,7 +32,7 @@ const DataList: NextPage = () => {
             <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
             {v}
           </TitleValue>
-          <InputValue>{value}</InputValue>
+          {value}
         </Fragment>
       );
     });
@@ -56,32 +59,6 @@ const DataList: NextPage = () => {
         <Header />
         <Data>
           {showForms()}
-          {/* <TitleValue>
-            <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
-            이름
-          </TitleValue>
-          <InputValue>김혜영</InputValue>
-          <TitleValue>
-            <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
-            휴대폰 번호
-          </TitleValue>
-          <InputValue>010-1234-5678</InputValue>
-          <TitleValue>
-            <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
-            배송지
-          </TitleValue>
-          <InputValue>
-            서울 성동구 독서당로 160 한남하이츠아파트 상가 1층
-          </InputValue>
-          <TitleValue>
-            <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
-            옵션 1
-          </TitleValue>
-          <InputValue>사이즈 S</InputValue>
-          <TitleValue>
-            <FcTodoList size="2.5rem" style={{ marginRight: "15px" }} />
-            첨부파일
-          </TitleValue> */}
           <PrevBtn onClick={goPrev} />
           <NextBtn onClick={goNext} />
         </Data>
@@ -93,14 +70,12 @@ const DataList: NextPage = () => {
 const DataListWrapper = styled.main`
   min-width: 50rem;
   max-width: 80rem;
-  /* height: 100vh; */
   border: solid 1px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
   display: flex;
   flex-direction: column;
-  /* overflow: scroll; */
 `;
 
 const Data = styled.div`
@@ -108,7 +83,6 @@ const Data = styled.div`
     rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
   border-radius: 10px;
   width: 80%;
-  /* height: 80%; */
   margin: 4rem 0rem 2rem 0rem;
   background-color: #f5f5f5;
 
@@ -138,6 +112,12 @@ const InputValue = styled.div`
   padding: 0.2rem 0.2rem 0.2rem 3rem;
   line-height: 5rem;
   overflow: auto;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const PrevBtn = styled.button`
