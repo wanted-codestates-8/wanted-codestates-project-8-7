@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { AddrObj } from "types/address";
 import ViewPostCode from "components/PostCodeModal";
 
-const Address = () => {
+interface addressProps {
+  label: string | undefined;
+}
+
+const Address = ({ label }: addressProps) => {
   const [postcodeModal, setPostcodeModal] = useState(false);
   const [addr, setAddr] = useState<AddrObj>();
 
@@ -16,7 +20,7 @@ const Address = () => {
   return (
     <>
       <Wrapper>
-        <Text>배송지</Text>
+        <Text>{label}</Text>
         <Input onClick={() => setPostcodeModal(true)} value={buildAddr()} />
       </Wrapper>
       {postcodeModal && (

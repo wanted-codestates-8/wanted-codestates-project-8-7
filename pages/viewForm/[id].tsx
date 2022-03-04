@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import DropDown from "components/GeneratedForm/DropDown";
 import { useSelector } from "react-redux";
 import { State } from "pages/forms";
+import { useAppSelector, selectForm } from "redux/slice";
 
 const testForm = {
   title: "폼 예시",
@@ -33,14 +34,8 @@ const GeneratedForm = () => {
   const [isSubmitName, setIsSubmitName] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
 
-  const data = useSelector((state) => state);
-  // console.log(testForm);
-
-  // const selectedType = (data: any) => {
-  //   data.map((type :any) => (
-
-  //   ))
-  // }
+  const data = useAppSelector((state) => state.form.forms);
+  const formData = data.find((v) => v.id === id);
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -49,6 +44,7 @@ const GeneratedForm = () => {
 
   const [inputState, setInputState] = useState(false);
   const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("changeNumber 123213");
     checkNum();
     if (e.target.value.length === 3 || e.target.value.length === 8) {
       setNumber(e.target.value + "-");
@@ -70,6 +66,60 @@ const GeneratedForm = () => {
     }
   }
 
+  const textLabel = formData?.formList.find((v) => v.type === "text")?.label;
+  const phoneLabel = formData?.formList.find((v) => v.type === "phone")?.label;
+  const addressLabel = formData?.formList.find(
+    (v) => v.type === "address"
+  )?.label;
+  const selectLabel = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.label;
+
+  const selectOptions = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.options;
+
+  const TextComponent = formData?.formList.map((v) => {
+    return v.type === "text" ? (
+      <Name
+        label={textLabel}
+        placeholder={testForm.data.placeholder ? testForm.data.placeholder : ""}
+        onChangeName={onChangeName}
+        name={name}
+      />
+    ) : null;
+  });
+
+  const PhoneComponent = formData?.formList.map((v) => {
+    return v.type === "phone" ? (
+      <PhoneNum
+        label={phoneLabel}
+        onChangeNumber={onChangeNumber}
+        number={number}
+        setNumber={setNumber}
+        inputState={inputState}
+      />
+    ) : null;
+  });
+
+  const AddressComponent = formData?.formList.map((v) => {
+    return v.type === "address" ? <Address label={addressLabel} /> : null;
+  });
+
+  const DropDownComponent = formData?.formList.map((v) => {
+    return v.type === "address" ? (
+      <DropDown selectOptions={selectOptions} />
+    ) : null;
+  });
+
+  const attachmentsComponent = formData?.formList.map((v) => {
+    return v.type === "file" ? <Attachments /> : null;
+  });
+
+  const agreementComponent = formData?.formList.map((v) => {
+    return v.type === "agreement" ? <Policy /> : null;
+  });
+
   const onSubmit = () => {
     console.log(name, number);
   };
@@ -77,23 +127,12 @@ const GeneratedForm = () => {
   return (
     <FormWrapper>
       <Header> Title</Header>
-      <Name
-        label={testForm.data.label}
-        placeholder={testForm.data.placeholder ? testForm.data.placeholder : ""}
-        onChangeName={onChangeName}
-        name={name}
-      />
-      <PhoneNum
-        label={testForm.data.label}
-        onChangeNumber={onChangeNumber}
-        number={number}
-        setNumber={setNumber}
-        inputState={inputState}
-      />
-      <Address />
-      <DropDown options={options} />
-      <Attachments />
-      <Policy />
+      {TextComponent}
+      {PhoneComponent}
+      {AddressComponent}
+      {DropDownComponent}
+      {attachmentsComponent}
+      {agreementComponent}
       <Submit onClick={onSubmit}> 제출하기</Submit>
     </FormWrapper>
   );

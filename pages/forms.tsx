@@ -19,6 +19,7 @@ import {
   DragStart,
   DraggableProvided,
 } from "react-beautiful-dnd";
+import { v4 as uuid } from "uuid";
 
 resetServerContext();
 
@@ -84,6 +85,7 @@ const Forms: NextPage = () => {
 
     dispatch(
       addFormData({
+        id: uuid(),
         title,
         formList,
       })

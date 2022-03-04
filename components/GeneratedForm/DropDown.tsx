@@ -6,7 +6,7 @@ interface Test {
   isShow: boolean;
 }
 
-const DropDown = ({ options }: any) => {
+const DropDown = ({ selectOptions }: any) => {
   const [isShow, setIsShow] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
 
@@ -43,8 +43,8 @@ const DropDown = ({ options }: any) => {
           )}
         </DropDownBtn>
         <DropdownContent isShow={isShow}>
-          {options && isShow
-            ? options.map((item: any, idx: number) => (
+          {selectOptions && isShow
+            ? selectOptions.map((item: any, idx: number) => (
                 <DropdownItem key={idx} onClick={() => onClickSelect(item)}>
                   {item}
                 </DropdownItem>
