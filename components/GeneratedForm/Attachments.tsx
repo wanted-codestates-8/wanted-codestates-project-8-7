@@ -29,6 +29,7 @@ const Attachments = () => {
     }, 300);
   }, [percentage]);
 
+
   return (
     <Wrapper>
       <Text>첨부파일 (선택)</Text>
@@ -68,6 +69,7 @@ const Attachments = () => {
         ) : (
           ""
         )}
+
       </AttachBox>
       <Description>첨부 파일은 위와 같이 입력할 수 있습니다.</Description>
     </Wrapper>
@@ -140,6 +142,7 @@ const ProgressWrap = styled.div`
   top: 50%;
   left: 0%;
 `;
+
 const Description = styled.div``;
 
 export default Attachments;

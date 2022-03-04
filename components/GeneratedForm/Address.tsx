@@ -1,18 +1,34 @@
-import React from 'react'
-import styled from 'styled-components'
+import { useState } from "react";
+import styled from "styled-components";
+import { AddrObj } from "types/address";
+import ViewPostCode from "components/PostCodeModal";
 
 const Address = () => {
+  const [postcodeModal, setPostcodeModal] = useState(false);
+  const [addr, setAddr] = useState<AddrObj>();
+
+  const buildAddr = () => {
+    if (!addr) return "";
+    const bldgName = addr.buildingName === "" ? "" : ` (${addr.buildingName})`;
+    return `(${addr.zonecode}) ${addr.address}${bldgName}, ${addr.addressDetail}`;
+  };
+
   return (
+    <>
       <Wrapper>
-          <Text>배송지</Text>
-          <Input />
-    </Wrapper>
-    )
-    
-}
+        <Text>배송지</Text>
+        <Input onClick={() => setPostcodeModal(true)} value={buildAddr()} />
+      </Wrapper>
+      {postcodeModal && (
+        <ViewPostCode setOpen={setPostcodeModal} setAddr={setAddr} />
+      )}
+    </>
+  );
+};
+
 const Wrapper = styled.div`
-    margin-top: 20px;
-`
+  margin-top: 20px;
+`;
 
 const Text = styled.div`
   font-weight: 800;
