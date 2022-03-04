@@ -11,6 +11,7 @@ export function makeStructure(type: string): State {
         required: true,
         label: "",
         placeholder: "",
+        description: "",
       };
 
     case "phone":
@@ -20,6 +21,7 @@ export function makeStructure(type: string): State {
         type: "phone",
         required: true,
         label: "",
+        description: "",
       };
     case "address":
       return {
@@ -28,6 +30,7 @@ export function makeStructure(type: string): State {
         type: "address",
         required: true,
         label: "",
+        description: "",
       };
 
     case "select":
@@ -38,6 +41,7 @@ export function makeStructure(type: string): State {
         label: "",
         options: [],
         required: true,
+        description: "",
       };
     case "file":
       return {
@@ -66,6 +70,7 @@ export function makeStructure(type: string): State {
         required: true,
         label: "",
         placeholder: "",
+        description: "",
       };
   }
 }
