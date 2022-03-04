@@ -8,8 +8,8 @@ import { CgArrowsVAlt } from "react-icons/cg";
 
 function Form({ state, provided, onChange, onRemove }: FormProps) {
   const [value, setValue] = useState("");
-  const [label, setLabel] = useState("");
-  const [placeholder, setPlaceholder] = useState("");
+  const [label, setLabel] = useState(state.label);
+  const [placeholder, setPlaceholder] = useState(state.placeholder);
   const [checked, setChecked] = useState(state.required ? true : false);
   const [selected, setSelected] = useState(state.type);
   const [tags, setTags] = useState([]);
@@ -17,6 +17,8 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
 
   function handleValue(value: string) {
     setValue(value);
+    const newField = { ...state, description: value };
+    onChange(state.key, newField);
   }
 
   const handleDeletTag = (idx: number) => {
@@ -34,10 +36,14 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
 
   const onPlaceholderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaceholder(e.target.value);
+    const newField = { ...state, placeholder: e.target.value };
+    onChange(state.key, newField);
   };
 
   const onLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLabel(e.target.value);
+    const newField = { ...state, label: e.target.value };
+    onChange(state.key, newField);
   };
 
   const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

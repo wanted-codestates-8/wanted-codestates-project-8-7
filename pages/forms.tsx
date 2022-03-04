@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import type { NextPage } from "next";
 import Form from "components/Form";
 import styled, { css } from "styled-components";
@@ -7,7 +7,9 @@ import "react-quill/dist/quill.snow.css";
 import { makeStructure } from "utils/makeStructure";
 import { useDispatch } from "react-redux";
 import { addFormData } from "redux/slice";
+import { findBlank } from "utils/findBlank";
 import { useRouter } from "next/router";
+import { debounce } from "utils/debounce";
 import {
   DragDropContext,
   Droppable,
@@ -43,9 +45,10 @@ const Forms: NextPage = () => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [formList, setFormList] = useState<State[]>([]);
-  const [submitState, setSubmitState] = useState({
-    text: "",
-  });
+  const [submitState, setSubmitState] = useState(false);
+  console.log(submitState, "submitState!!!");
+
+  const router = useRouter();
 
   const onChange = (key: string, newField: State) => {
     const idx = formList.findIndex((form) => form.key === key);
@@ -74,14 +77,8 @@ const Forms: NextPage = () => {
   };
 
   const saveForm = () => {
-    const findBlank = () => {
-      return formList.some((form) => {
-        const values = Object.values(form);
-      });
-    };
-
-    if (!title || !formList.length) {
-      alert("hello");
+    if (!title || !formList.length || findBlank(formList)) {
+      return;
     }
 
     dispatch(
@@ -90,7 +87,23 @@ const Forms: NextPage = () => {
         formList,
       })
     );
+
+    router.push("/");
   };
+
+  const checkBlank = () => {
+    if (title && formList.length && !findBlank(formList)) {
+      setSubmitState(true);
+    } else {
+      setSubmitState(false);
+    }
+  };
+
+  const debounceBlankChecker = useCallback(debounce(300), []);
+
+  useEffect(() => {
+    debounceBlankChecker(checkBlank);
+  }, [title, formList]);
 
   return (
     <Main>
@@ -116,7 +129,9 @@ const Forms: NextPage = () => {
 
         <AddButton onClick={addForm}>필드 추가하기</AddButton>
 
-        <SaveButton onClick={saveForm}>저장 하기</SaveButton>
+        <SaveButton onClick={saveForm} className={!submitState ? "inactive" : ""}>
+          저장 하기
+        </SaveButton>
       </InputForm>
     </Main>
 
@@ -229,6 +244,10 @@ const SaveButton = styled.button`
   float: right;
   margin-top: 20px;
   font-size: 18px;
+
+  &.inactive {
+    background-color: ${({ theme }) => theme.colors.grayTwo};
+  }
 `;
 
 export default Forms;
