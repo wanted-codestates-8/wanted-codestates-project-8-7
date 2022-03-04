@@ -1,9 +1,15 @@
-import React, { useCallback, useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import styled from "styled-components";
 import ProgressBar from "../Progress/ProgressBar";
 
 interface AttachmentProps {
-  setImgData: Dispatch<SetStateAction<string | undefined>>;
+  setImgData: Dispatch<SetStateAction<string>>;
 }
 
 const Attachments = ({ setImgData }: AttachmentProps) => {
@@ -82,7 +88,10 @@ const Attachments = ({ setImgData }: AttachmentProps) => {
                   {percentage === 0 ? (
                     <></>
                   ) : (
-                    <ProgressBar width={percentage} animationSpeed={animationSpeed} />
+                    <ProgressBar
+                      width={percentage}
+                      animationSpeed={animationSpeed}
+                    />
                   )}
                 </ProgressWrap>
               </ImgItem>

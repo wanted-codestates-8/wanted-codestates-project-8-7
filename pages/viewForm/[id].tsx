@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Name from "components/GeneratedForm/Name";
 import styled from "styled-components";
 import PhoneNum from "components/GeneratedForm/PhoneNum";
@@ -10,7 +10,6 @@ import DropDown from "components/GeneratedForm/DropDown";
 import { useAppSelector } from "redux/slice";
 import { useDispatch } from "react-redux";
 import { addData } from "redux/slice";
-import { Data } from "redux/slice";
 
 const GeneratedForm = () => {
   const dispatch = useDispatch();
@@ -57,12 +56,20 @@ const GeneratedForm = () => {
   }
 
   const textLabel = formData?.formList.find((v) => v.type === "text")?.label;
-  const textPlaceholder = formData?.formList.find((v) => v.type === "text")?.placeholder;
+  const textPlaceholder = formData?.formList.find(
+    (v) => v.type === "text"
+  )?.placeholder;
   const phoneLabel = formData?.formList.find((v) => v.type === "phone")?.label;
-  const addressLabel = formData?.formList.find((v) => v.type === "address")?.label;
-  const selectLabel = formData?.formList.find((v) => v.type === "select")?.label;
+  const addressLabel = formData?.formList.find(
+    (v) => v.type === "address"
+  )?.label;
+  const selectLabel = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.label;
 
-  const selectOptions = formData?.formList.find((v) => v.type === "select")?.options;
+  const selectOptions = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.options;
 
   const TextComponent = formData?.formList.map((v) => {
     return v.type === "text" ? (
@@ -89,13 +96,20 @@ const GeneratedForm = () => {
 
   const AddressComponent = formData?.formList.map((v) => {
     return v.type === "address" ? (
-      <Address label={addressLabel} showAddress={address} setShowAddress={setShowAddress} />
+      <Address
+        label={addressLabel}
+        showAddress={address}
+        setShowAddress={setShowAddress}
+      />
     ) : null;
   });
 
   const DropDownComponent = formData?.formList.map((v) => {
     return v.type === "select" ? (
-      <DropDown selectOptions={selectOptions} setSelectedItem={setSelectedItem} />
+      <DropDown
+        selectOptions={selectOptions}
+        setSelectedItem={setSelectedItem}
+      />
     ) : null;
   });
 
@@ -103,7 +117,9 @@ const GeneratedForm = () => {
     return v.type === "file" ? <Attachments setImgData={setImgData} /> : null;
   });
 
-  const agreementContents = formData?.formList.find((v) => v.type === "agreement")?.contents;
+  const agreementContents = formData?.formList.find(
+    (v) => v.type === "agreement"
+  )?.contents;
   const agreementComponent = formData?.formList.map((v) => {
     return v.type === "agreement" ? (
       <Policy
@@ -117,7 +133,7 @@ const GeneratedForm = () => {
   const onSubmit = () => {
     //todo 조건부 비활성화
 
-    const dataset = {
+    const dataset: { [key: string]: any } = {
       text,
       phone,
       select,
@@ -126,7 +142,7 @@ const GeneratedForm = () => {
       address,
     };
 
-    const combinedData = {};
+    const combinedData: { [key: string]: any } = {};
 
     formData?.formList.forEach((form) => {
       const value = dataset[form.type];
@@ -139,7 +155,7 @@ const GeneratedForm = () => {
 
     dispatch(
       addData({
-        id,
+        id: id as string,
         title: formData!.title,
         dataList: [combinedData],
       })
@@ -199,7 +215,8 @@ const SubmitWrap = styled.div`
   position: sticky;
   bottom: 0;
   padding: 10px;
-  box-shadow: 0 -2px 20px 0 rgba(14, 67, 97, 0.06), 0 1px 0 0 rgba(14, 67, 97, 0.06);
+  box-shadow: 0 -2px 20px 0 rgba(14, 67, 97, 0.06),
+    0 1px 0 0 rgba(14, 67, 97, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
