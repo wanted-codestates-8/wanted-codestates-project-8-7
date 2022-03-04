@@ -8,6 +8,17 @@ import { makeStructure } from "utils/makeStructure";
 import { useDispatch } from "react-redux";
 import { addFormData } from "redux/slice";
 import { useRouter } from "next/router";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  resetServerContext,
+  DropResult,
+  DragStart,
+  DraggableProvided,
+} from "react-beautiful-dnd";
+
+resetServerContext();
 
 export interface State {
   key: string;
@@ -23,6 +34,7 @@ export interface State {
 
 export interface FormProps {
   state: State;
+  provided: DraggableProvided;
   onChange: (key: string, newField: State) => void;
   onRemove: (key: string) => void;
 }
@@ -52,6 +64,10 @@ const Forms: NextPage = () => {
     setFormList(newData);
   }
 
+  useEffect(() => {
+    console.log(formList);
+  }, [formList]);
+
   const removeForm = (key: string) => {
     const filteredFormList = formList.filter((form) => form.key !== key);
     setFormList(filteredFormList);
@@ -76,30 +92,74 @@ const Forms: NextPage = () => {
     );
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const currentList = [...formList];
+    const draggingItemIndex = result.source.index;
+    const dropItemIndex = result.destination.index;
+
+    // 드래그한 요소를 배열에서 삭제
+    const removeForm = currentList.splice(draggingItemIndex, 1);
+
+    // 드롭한 위치에 드래그한 요소를 추가
+    currentList.splice(dropItemIndex, 0, removeForm[0]);
+
+    setFormList(currentList);
+  };
+
   return (
-    <Main>
-      <InputForm onSubmit={(e) => e.preventDefault()}>
-        <Section>
-          <Title>제목*</Title>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)}></Input>
-        </Section>
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Main>
+        <InputForm onSubmit={(e) => e.preventDefault()}>
+          <Section>
+            <Title>제목*</Title>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            ></Input>
+          </Section>
 
-        <Section>
-          <Title>필드목록*</Title>
-          <FormList>
-            {formList.map((form) => (
-              <FormItem key={form.key}>
-                <Form state={form} onChange={onChange} onRemove={removeForm} />
-              </FormItem>
-            ))}
-          </FormList>
-        </Section>
+          <Section>
+            <Title>필드목록*</Title>
+            <Droppable droppableId="fields">
+              {(provided) => (
+                <FormList {...provided.droppableProps} ref={provided.innerRef}>
+                  {formList.map((form, index) => (
+                    <Draggable
+                      key={form.key}
+                      draggableId={form.key}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <FormItem
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                        >
+                          <Form
+                            state={form}
+                            onChange={onChange}
+                            onRemove={removeForm}
+                            provided={provided}
+                          />
+                        </FormItem>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </FormList>
+              )}
+            </Droppable>
+          </Section>
 
-        <AddButton onClick={addForm}>필드 추가하기</AddButton>
+          <AddButton onClick={addForm}>필드 추가하기</AddButton>
 
-        <SaveButton onClick={saveForm}>저장 하기</SaveButton>
-      </InputForm>
-    </Main>
+          <SaveButton onClick={saveForm}>저장 하기</SaveButton>
+        </InputForm>
+      </Main>
+    </DragDropContext>
   );
 };
 

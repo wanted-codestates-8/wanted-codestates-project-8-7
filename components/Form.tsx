@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { CgArrowsVAlt } from "react-icons/cg";
 
-function Form({ state, onChange, onRemove }: FormProps) {
+function Form({ state, provided, onChange, onRemove }: FormProps) {
   const [value, setValue] = useState("");
   const [label, setLabel] = useState("");
   const [placeholder, setPlaceholder] = useState("");
@@ -43,11 +43,15 @@ function Form({ state, onChange, onRemove }: FormProps) {
         </Select>
         <Label value={label} onChange={onLabelChange} />
         <CheckBoxWrapper>
-          <CheckBox type="checkbox" checked={checked} onChange={() => setChecked(!checked)} />
+          <CheckBox
+            type="checkbox"
+            checked={checked}
+            onChange={() => setChecked(!checked)}
+          />
           <div>필수</div>
         </CheckBoxWrapper>
 
-        <Drag>
+        <Drag {...provided.dragHandleProps}>
           <CgArrowsVAlt></CgArrowsVAlt>
         </Drag>
         <DelteBtn onClick={() => onRemove(state.key)}>
