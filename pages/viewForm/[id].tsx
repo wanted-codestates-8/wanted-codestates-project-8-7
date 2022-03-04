@@ -101,20 +101,40 @@ const GeneratedForm = () => {
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  padding: 1rem 1.5rem 2.5rem;
+  height: 100vh;
+  /* padding: 1rem 1.5rem 2.5rem; */
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 56px;
+  font-size: 16px;
+`;
+
+const SubmitWrap = styled.div`
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  padding: 10px;
+  box-shadow: 0 -2px 20px 0 rgba(14, 67, 97, 0.06),
+    0 1px 0 0 rgba(14, 67, 97, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400px;
 `;
 
 const Submit = styled.button`
-  width: 100px;
-  height: 50px;
+  background-color: salmon;
+  width: 400px;
+  margin-top: auto;
+  height: 52px;
+  color: white;
+  border-radius: 10px;
 `;
 
 export default GeneratedForm;
