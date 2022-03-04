@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 interface NameProps {
-  label: string;
+  label: string | undefined;
   placeholder: string;
   onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
@@ -16,7 +16,7 @@ const Name = ({ label, placeholder, onChangeName, name }: NameProps) => {
       <Text>{label}</Text>
       <Input
         onBlur={() => setInputState(true)}
-        type="name"
+        type="text"
         placeholder={placeholder}
         onChange={onChangeName}
         value={name}

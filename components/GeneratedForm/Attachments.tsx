@@ -1,12 +1,23 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, {
+  useCallback,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import styled from "styled-components";
 import ProgressBar from "../Progress/ProgressBar";
-const Attachments = ({ setImgData }) => {
+
+interface AttachmentProps {
+  setImgData: Dispatch<SetStateAction<File | undefined>>;
+}
+
+const Attachments = ({ setImgData }: AttachmentProps) => {
   const [percentage, setPercentage] = useState(0);
 
   const animationSpeed = 1000;
 
-  const [imgState, setImgState] = useState([]);
+  const [imgState, setImgState] = useState<string[]>([]);
   const handleImgChange = useCallback((e) => {
     const file = e.target.files[0];
     setImgData(file);
@@ -20,7 +31,8 @@ const Attachments = ({ setImgData }) => {
 
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImgState([reader.result]);
+        const result = reader.result as string;
+        setImgState([result]);
       };
     }
   }, []);
@@ -70,7 +82,7 @@ const Attachments = ({ setImgData }) => {
           <ImgWrapper>
             {imgState.map((img, idx) => (
               <ImgItem key={idx}>
-                <ImgFile src={img} alt={idx}></ImgFile>
+                <ImgFile src={img} alt={idx.toString()}></ImgFile>
                 <ProgressWrap>
                   {percentage === 0 ? (
                     <></>

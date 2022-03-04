@@ -7,8 +7,8 @@ import Attachments from "components/GeneratedForm/Attachments";
 import Policy from "components/GeneratedForm/Policy";
 import { useRouter } from "next/router";
 import DropDown from "components/GeneratedForm/DropDown";
-import { useSelector } from "react-redux";
-import { State } from "pages/forms";
+import { useAppSelector } from "redux/slice";
+import { AddrObj } from "types/address";
 
 const testForm = {
   title: "폼 예시",
@@ -30,19 +30,14 @@ const GeneratedForm = () => {
   const [form, setForm] = useState([]);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-  const [isSubmitName, setIsSubmitName] = useState(false);
-  const [imgData, setImgData] = useState();
+  const [selectedItem, setSelectedItem] = useState("");
+  const [imgData, setImgData] = useState<File>();
+  const [showAddress, setShowAddress] = useState();
 
-  const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
+  // const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
 
-  const data = useSelector((state) => state);
-  // console.log(testForm);
-
-  // const selectedType = (data: any) => {
-  //   data.map((type :any) => (
-
-  //   ))
-  // }
+  const data = useAppSelector((state) => state.form.forms);
+  const formData = data.find((v) => v.id === id);
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -72,33 +67,88 @@ const GeneratedForm = () => {
     }
   }
 
-  const onSubmit = () => {
-    console.log(name, number);
-  };
+  const textLabel = formData?.formList.find((v) => v.type === "text")?.label;
+  const phoneLabel = formData?.formList.find((v) => v.type === "phone")?.label;
+  const addressLabel = formData?.formList.find(
+    (v) => v.type === "address"
+  )?.label;
+  const selectLabel = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.label;
 
-  return (
-    <FormWrapper>
-      <Header> Title</Header>
+  const selectOptions = formData?.formList.find(
+    (v) => v.type === "select"
+  )?.options;
+
+  const TextComponent = formData?.formList.map((v) => {
+    return v.type === "text" ? (
       <Name
-        label={testForm.data.label}
+        label={textLabel}
         placeholder={testForm.data.placeholder ? testForm.data.placeholder : ""}
         onChangeName={onChangeName}
         name={name}
       />
+    ) : null;
+  });
+
+  const PhoneComponent = formData?.formList.map((v) => {
+    return v.type === "phone" ? (
       <PhoneNum
-        label={testForm.data.label}
+        label={phoneLabel}
         onChangeNumber={onChangeNumber}
         number={number}
         setNumber={setNumber}
         inputState={inputState}
       />
-      <Address />
-      <DropDown options={options} />
-      <Attachments setImgData={setImgData} />
-      <Policy />
-      <SubmitWrap>
-        <Submit onClick={onSubmit}> 제출하기</Submit>
-      </SubmitWrap>
+    ) : null;
+  });
+
+  const AddressComponent = formData?.formList.map((v) => {
+    return v.type === "address" ? (
+      <Address
+        label={addressLabel}
+        showAddress={showAddress}
+        setShowAddress={setShowAddress}
+      />
+    ) : null;
+  });
+
+  const DropDownComponent = formData?.formList.map((v) => {
+    return v.type === "select" ? (
+      <DropDown
+        selectOptions={selectOptions}
+        setSelectedItem={setSelectedItem}
+      />
+    ) : null;
+  });
+
+  const attachmentsComponent = formData?.formList.map((v) => {
+    return v.type === "file" ? <Attachments setImgData={setImgData} /> : null;
+  });
+
+  const agreementContents = formData?.formList.find(
+    (v) => v.type === "agreement"
+  )?.contents;
+  const agreementComponent = formData?.formList.map((v) => {
+    return v.type === "agreement" ? (
+      <Policy agreementContents={agreementContents} />
+    ) : null;
+  });
+
+  const onSubmit = () => {
+    console.log(name, number, selectedItem, showAddress, imgData);
+  };
+
+  return (
+    <FormWrapper>
+      <Header> Title</Header>
+      {TextComponent}
+      {PhoneComponent}
+      {AddressComponent}
+      {DropDownComponent}
+      {attachmentsComponent}
+      {agreementComponent}
+      <Submit onClick={onSubmit}> 제출하기</Submit>
     </FormWrapper>
   );
 };

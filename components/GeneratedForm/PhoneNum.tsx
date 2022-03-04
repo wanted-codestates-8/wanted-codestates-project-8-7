@@ -2,7 +2,7 @@ import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 interface PhoneNumProps {
-  label: string;
+  label: string | undefined;
   onChangeNumber: (e: React.ChangeEvent<HTMLInputElement>) => void;
   number: string;
   setNumber: any;
@@ -18,7 +18,7 @@ const PhoneNum = ({
 }: PhoneNumProps) => {
   return (
     <Wrapper>
-      <Text> 휴대폰 번호 {label}</Text>{" "}
+      <Text> {label}</Text>{" "}
       <Input
         type="text"
         onChange={onChangeNumber}
