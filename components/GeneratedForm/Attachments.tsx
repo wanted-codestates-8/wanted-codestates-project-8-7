@@ -1,15 +1,75 @@
-import React from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
-
+import ProgressBar from "../Progress/ProgressBar";
 const Attachments = () => {
+  const [percentage, setPercentage] = useState(0);
+
+  const animationSpeed = 1000;
+
+  const [imgState, setImgState] = useState([]);
+  const handleImgChange = useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onprogress = async (e) => {
+        setTimeout(() => {
+          setPercentage((e.loaded / e.total) * 100);
+        }, 300);
+      };
+
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImgState((imgState) => [...imgState, reader.result]);
+      };
+    }
+  }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setPercentage(0);
+    }, 300);
+  }, [percentage]);
+
+
   return (
     <Wrapper>
       <Text>첨부파일 (선택)</Text>
       <AttachBox>
-        <svg width="32" height="32" viewBox="0 0 32 32">
-          <path d="M16,4C15.448,4 15,4.448 15,5L15,15L5,15C4.448,15 4,15.448 4,16C4,16.552 4.448,17 5,17L15,17L15,27C15,27.552 15.448,28 16,28C16.552,28 17,27.552 17,27L17,17L27,17C27.552,17 28,16.552 28,16C28,15.448 27.552,15 27,15L17,15L17,5C17,4.448 16.552,4 16,4Z"></path>
-        </svg>
-        <AttachText>눌러서 파일 등록</AttachText>
+        {!imgState.length && (
+          <>
+            <AttachText htmlFor="inputFile" className="review-file-label">
+              + 이미지 추가
+            </AttachText>
+            <Label
+              id="inputFile"
+              type="file"
+              className="review-file"
+              onChange={handleImgChange}
+            ></Label>
+          </>
+        )}
+
+        {imgState.length ? (
+          <ImgWrapper>
+            {imgState.map((img, idx) => (
+              <ImgItem key={idx}>
+                <ImgFile src={img} alt={idx}></ImgFile>
+                <ProgressWrap>
+                  {percentage === 0 ? (
+                    <></>
+                  ) : (
+                    <ProgressBar
+                      width={percentage}
+                      animationSpeed={animationSpeed}
+                    />
+                  )}
+                </ProgressWrap>
+              </ImgItem>
+            ))}
+          </ImgWrapper>
+        ) : (
+          ""
+        )}
+
       </AttachBox>
       <Description>첨부 파일은 위와 같이 입력할 수 있습니다.</Description>
     </Wrapper>
@@ -37,7 +97,51 @@ const AttachBox = styled.div`
   flex-direction: column;
 `;
 
-const AttachText = styled.div``;
+const Label = styled.input`
+  display: none;
+`;
+
+const AttachText = styled.label`
+  display: block;
+  margin-top: 20px;
+  width: 200px;
+  height: 40px;
+  border-radius: 10px;
+  line-height: 40px;
+  text-align: center;
+  background-color: salmon;
+  color: white;
+  cursor: pointer;
+`;
+
+const ImgWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* width: calc(100% - 50px); */
+  /* overflow: scroll; */
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
+const ImgItem = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`;
+
+const ImgFile = styled.img`
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+`;
+
+const ProgressWrap = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0%;
+`;
 
 const Description = styled.div``;
 
