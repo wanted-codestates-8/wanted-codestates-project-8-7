@@ -36,7 +36,8 @@ const GeneratedForm = () => {
   const [form, setForm] = useState([]);
   const [name, setName] = useState("");
   const [isSubmitName, setIsSubmitName] = useState(false);
-
+  const [imgData, setImgData] = useState();
+  console.log(imgData, 1);
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
     //setForm(...form, name)
@@ -68,7 +69,7 @@ const GeneratedForm = () => {
         <PhoneNum label={testForm.label} />
         <Address />
         <DropDown />
-        <Attachments />
+        <Attachments setImgData={setImgData} />
         <Policy />
         <SubmitWrap>
           <Submit> 제출하기</Submit>
@@ -105,6 +106,7 @@ const SubmitWrap = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
+  background: #e9e9e9;
 `;
 
 const Submit = styled.button`
