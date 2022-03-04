@@ -237,4 +237,4 @@ const DelteTag = styled.div`
 const TagContent = styled.div`
   color: #45d06b;
 `;
-export default Form;
+export default memo(Form);

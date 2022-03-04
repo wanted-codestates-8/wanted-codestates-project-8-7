@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import type { NextPage } from "next";
 import Form from "components/Form";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Main } from "./index";
 import "react-quill/dist/quill.snow.css";
 import { makeStructure } from "utils/makeStructure";
@@ -49,27 +49,33 @@ const Forms: NextPage = () => {
 
   const router = useRouter();
 
-  const onChange = (key: string, newField: State) => {
-    const idx = formList.findIndex((form) => form.key === key);
+  const onChange = useCallback(
+    (key: string, newField: State) => {
+      const idx = formList.findIndex((form) => form.key === key);
 
-    const tempList = [...formList];
-    tempList[idx] = newField;
+      const tempList = [...formList];
+      tempList[idx] = newField;
 
-    setFormList(tempList);
-  };
+      setFormList(tempList);
+    },
+    [formList]
+  );
 
-  function addForm() {
+  const addForm = useCallback(() => {
     const newData = [...formList];
 
     newData.push(makeStructure("text"));
 
     setFormList(newData);
-  }
+  }, [formList]);
 
-  const removeForm = (key: string) => {
-    const filteredFormList = formList.filter((form) => form.key !== key);
-    setFormList(filteredFormList);
-  };
+  const removeForm = useCallback(
+    (key: string) => {
+      const filteredFormList = formList.filter((form) => form.key !== key);
+      setFormList(filteredFormList);
+    },
+    [formList]
+  );
 
   const saveForm = () => {
     if (!title || !formList.length || findBlank(formList)) {
@@ -165,14 +171,15 @@ const Forms: NextPage = () => {
           <AddButton type="button" onClick={addForm}>
             필드 추가하기
           </AddButton>
-
-          <SaveButton
-            type="button"
-            onClick={saveForm}
-            className={!submitState ? "inactive" : ""}
-          >
-            저장 하기
-          </SaveButton>
+          <SaveButtonWrapper>
+            <SaveButton
+              type="button"
+              onClick={saveForm}
+              className={!submitState ? "inactive" : ""}
+            >
+              저장 하기
+            </SaveButton>
+          </SaveButtonWrapper>
         </InputForm>
       </Main>
     </DragDropContext>
@@ -206,14 +213,20 @@ const AddButton = styled.button`
   border-radius: 10px;
   font-size: 18px;
 `;
+const SaveButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const SaveButton = styled.button`
   width: 90px;
   height: 40px;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.pointColor};
   color: white;
-  float: right;
-  margin-top: 20px;
+  margin: 20px 0;
+  margin: 20px 0;
   font-size: 18px;
 
   &.inactive {
