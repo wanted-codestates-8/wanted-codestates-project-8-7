@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
-import Header from "./Header";
-import SingleFormList from "./SingleFormList";
+import Header from "../components/Header";
+import SingleFormList from "../components/SingleFormList";
 
 
 

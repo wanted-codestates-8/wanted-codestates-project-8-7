@@ -1,33 +1,49 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useSelector } from "react-redux";
+import { State } from "pages/forms";
 
 import type { AppState } from "./store";
 
+interface Data {
+  [label: string]: {
+    type: "text" | "phone" | "address" | "select" | "file" | "agreement";
+    value: string | boolean;
+  };
+}
+
 export interface FormState {
-  value: number;
-  status: "idle" | "loading" | "failed";
+  forms: { id: string; title: string; formList: State[] }[];
+  data: { id: string; title: string; dataList: Data[] }[];
 }
 
 const initialState: FormState = {
-  value: 0,
-  status: "idle",
+  forms: [],
+  data: [],
 };
 
 export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    addFormData: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ id: string; title: string; formList: State[] }>
+    ) => {
+      state.forms.push(payload);
     },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    addData: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ id: string; title: string; dataList: Data[] }>
+    ) => {
+      state.data.push(payload);
     },
   },
 });
-
-export const { increment, decrement, incrementByAmount } = formSlice.actions;
+export const { addFormData, addData } = formSlice.actions;
 export const selectForm = (state: AppState) => state.form;
+export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
 export default formSlice.reducer;

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import styled from "styled-components";
-import Header from "./Header";
+import Header from "../components/Header";
 import { FcTodoList } from 'react-icons/fc'
 
 const DataList: NextPage = () => {
