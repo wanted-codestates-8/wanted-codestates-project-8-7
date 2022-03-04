@@ -1,12 +1,13 @@
 import MakedForm from "components/MakedForm";
 import type { NextPage } from "next";
-
 import styled from "styled-components";
 
 const Home: NextPage = () => {
-  return <Main>
-    <MakedForm />
-  </Main>;
+  return (
+    <Main>
+      <MakedForm />
+    </Main>
+  );
 };
 
 const Main = styled.main`
