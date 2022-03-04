@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import ProgressBar from "../Progress/ProgressBar";
-const Attachments = () => {
+const Attachments = ({ setImgData }) => {
   const [percentage, setPercentage] = useState(0);
 
   const animationSpeed = 1000;
@@ -9,6 +9,7 @@ const Attachments = () => {
   const [imgState, setImgState] = useState([]);
   const handleImgChange = useCallback((e) => {
     const file = e.target.files[0];
+    setImgData(file);
     if (file) {
       const reader = new FileReader();
       reader.onprogress = async (e) => {
@@ -19,7 +20,7 @@ const Attachments = () => {
 
       reader.readAsDataURL(file);
       reader.onload = () => {
-        setImgState((imgState) => [...imgState, reader.result]);
+        setImgState([reader.result]);
       };
     }
   }, []);
@@ -29,10 +30,27 @@ const Attachments = () => {
     }, 300);
   }, [percentage]);
 
-
   return (
     <Wrapper>
-      <Text>첨부파일 (선택)</Text>
+      <ChangeWrap>
+        <Text>첨부파일 (선택)</Text>
+        {imgState.length ? (
+          <div>
+            <ImgBtn htmlFor="inputFile" className="review-file-label">
+              이미지 수정
+            </ImgBtn>
+            <Label
+              id="inputFile"
+              type="file"
+              className="review-file"
+              onChange={handleImgChange}
+            ></Label>
+          </div>
+        ) : (
+          <></>
+        )}
+      </ChangeWrap>
+
       <AttachBox>
         {!imgState.length && (
           <>
@@ -69,7 +87,6 @@ const Attachments = () => {
         ) : (
           ""
         )}
-
       </AttachBox>
       <Description>첨부 파일은 위와 같이 입력할 수 있습니다.</Description>
     </Wrapper>
@@ -113,6 +130,16 @@ const AttachText = styled.label`
   text-align: center;
   background-color: salmon;
   color: white;
+  cursor: pointer;
+`;
+const ChangeWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ImgBtn = styled.label`
+  font-size: 14px;
+  font-weight: 800;
   cursor: pointer;
 `;
 

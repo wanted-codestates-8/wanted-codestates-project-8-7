@@ -31,6 +31,8 @@ const GeneratedForm = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
   const [isSubmitName, setIsSubmitName] = useState(false);
+  const [imgData, setImgData] = useState();
+
   const [canSubmit, setCanSubmit] = useState(false); // 제출 버튼 활성화/비활성화 상태
 
   const data = useSelector((state) => state);
@@ -75,6 +77,7 @@ const GeneratedForm = () => {
   };
 
   return (
+
     <FormWrapper>
       <Header> Title</Header>
       <Name
@@ -92,7 +95,7 @@ const GeneratedForm = () => {
       />
       <Address />
       <DropDown options={options} />
-      <Attachments />
+      <Attachments setImgData={setImgData} />
       <Policy />
       <Submit onClick={onSubmit}> 제출하기</Submit>
     </FormWrapper>
@@ -126,6 +129,7 @@ const SubmitWrap = styled.div`
   align-items: center;
   justify-content: center;
   width: 400px;
+  background: #e9e9e9;
 `;
 
 const Submit = styled.button`
