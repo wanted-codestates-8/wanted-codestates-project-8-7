@@ -39,7 +39,7 @@ const SingleFormListWrapper = styled.div`
   flex: 1 1 0;
 
   :hover {
-    background-color: #a0c6f1;
+    /* background-color: #a0c6f1; */
     box-shadow: rgba(46, 124, 240, 0.4) 5px 5px, rgba(46, 124, 240, 0.3) 10px 10px, rgba(46, 124, 240, 0.2) 15px 15px, rgba(46, 124, 240, 0.1) 20px 20px, rgba(46, 124, 240, 0.05) 25px 25px;
   }
 `

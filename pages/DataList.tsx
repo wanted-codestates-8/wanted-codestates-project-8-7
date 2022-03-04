@@ -48,7 +48,7 @@ const DataList: NextPage = () => {
 const DataListWrapper = styled.main`
   min-width: 50rem;
   max-width: 80rem;
-  height: 100vh;
+  /* height: 100vh; */
   border: solid 1px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -62,7 +62,7 @@ const Data = styled.div`
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
   border-radius: 10px;
   width: 80%;
-  height: 80%;
+  /* height: 80%; */
   margin: 4rem 0rem 2rem 0rem;
   background-color: #F5F5F5;
 
@@ -73,6 +73,8 @@ const Data = styled.div`
   padding: 5% 10% 0% 10%;
 
   flex-grow: 1;
+
+  overflow: scroll;
 
 `
 const TitleValue = styled.div`
