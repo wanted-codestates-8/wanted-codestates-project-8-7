@@ -46,7 +46,6 @@ const Forms: NextPage = () => {
   const [title, setTitle] = useState("");
   const [formList, setFormList] = useState<State[]>([]);
   const [submitState, setSubmitState] = useState(false);
-  console.log(submitState, "submitState!!!");
 
   const router = useRouter();
 
@@ -66,10 +65,6 @@ const Forms: NextPage = () => {
 
     setFormList(newData);
   }
-
-  useEffect(() => {
-    console.log(formList);
-  }, [formList]);
 
   const removeForm = (key: string) => {
     const filteredFormList = formList.filter((form) => form.key !== key);
@@ -104,37 +99,6 @@ const Forms: NextPage = () => {
   useEffect(() => {
     debounceBlankChecker(checkBlank);
   }, [title, formList]);
-
-  return (
-    <Main>
-      <InputForm onSubmit={(e) => e.preventDefault()}>
-        <Section>
-          <Title>제목*</Title>
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          ></Input>
-        </Section>
-
-        <Section>
-          <Title>필드목록*</Title>
-          <FormList>
-            {formList.map((form) => (
-              <FormItem key={form.key}>
-                <Form state={form} onChange={onChange} onRemove={removeForm} />
-              </FormItem>
-            ))}
-          </FormList>
-        </Section>
-
-        <AddButton onClick={addForm}>필드 추가하기</AddButton>
-
-        <SaveButton onClick={saveForm} className={!submitState ? "inactive" : ""}>
-          저장 하기
-        </SaveButton>
-      </InputForm>
-    </Main>
-
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -198,13 +162,20 @@ const Forms: NextPage = () => {
             </Droppable>
           </Section>
 
-          <AddButton onClick={addForm}>필드 추가하기</AddButton>
+          <AddButton type="button" onClick={addForm}>
+            필드 추가하기
+          </AddButton>
 
-          <SaveButton onClick={saveForm}>저장 하기</SaveButton>
+          <SaveButton
+            type="button"
+            onClick={saveForm}
+            className={!submitState ? "inactive" : ""}
+          >
+            저장 하기
+          </SaveButton>
         </InputForm>
       </Main>
     </DragDropContext>
-
   );
 };
 

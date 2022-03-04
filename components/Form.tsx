@@ -12,7 +12,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
   const [placeholder, setPlaceholder] = useState(state.placeholder);
   const [checked, setChecked] = useState(state.required ? true : false);
   const [selected, setSelected] = useState(state.type);
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
 
   function handleValue(value: string) {
@@ -28,9 +28,13 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
   };
 
   const onSelectAdd = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setTags([...tags, e.target.value]);
+    if (tagInput.trim().length > 1 && e.key === ",") {
+      const newTags = [...tags, tagInput.slice(0, -1)];
+      setTags(newTags);
       setTagInput("");
+
+      const newField = { ...state, options: newTags };
+      onChange(state.key, newField);
     }
   };
 
@@ -103,7 +107,7 @@ function Form({ state, provided, onChange, onRemove }: FormProps) {
 
           <PlaceHolder
             placeholder="옵션값을 입력하세요"
-            onKeyDown={onSelectAdd}
+            onKeyUp={onSelectAdd}
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
           />
