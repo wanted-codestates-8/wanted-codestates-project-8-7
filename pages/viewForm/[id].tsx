@@ -123,7 +123,7 @@ const GeneratedForm = () => {
 
   const agreementContents = formData?.formList.find(
     (v) => v.type === "agreement"
-  )?.contents;
+  )?.contents as string;
   const agreementComponent = formData?.formList.map((v) => {
     return v.type === "agreement" ? (
       <Policy
