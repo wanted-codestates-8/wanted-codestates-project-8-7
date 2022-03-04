@@ -2,31 +2,30 @@ import { useState } from "react";
 import styled from "styled-components";
 
 interface NameProps {
-  label: string,
-  placeholder: string,
-  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  name: string,
+  label: string;
+  placeholder: string;
+  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
 }
 
-const Name = ({ label, placeholder, onChangeName, name } : NameProps ) => {
+const Name = ({ label, placeholder, onChangeName, name }: NameProps) => {
   const [inputState, setInputState] = useState(false);
 
   return (
     <Wrapper>
       <Text>{label}</Text>
       <Input
-        onBlur={() => setInputState(true) }
+        onBlur={() => setInputState(true)}
         type="name"
-        placeholder={placeholder} onChange={onChangeName} value={name} />
-      {
-        name === '' && inputState ?
-          <Warning>
-            이름 항목은 필수 정보입니다.
-          </Warning>
-          : null
-      }
+        placeholder={placeholder}
+        onChange={onChangeName}
+        value={name}
+      />
+      {name === "" && inputState ? (
+        <Warning>이름 항목은 필수 정보입니다.</Warning>
+      ) : null}
     </Wrapper>
-  )
+  );
 };
 
 const Wrapper = styled.div``;
@@ -46,7 +45,7 @@ const Input = styled.input`
 `;
 
 const Warning = styled.div`
-  /* display: ${props => props ? 'block' : 'none'} */
+  /* display: ${(props) => (props ? "block" : "none")} */
   color: red;
   font-weight: lighter;
   font-size: 12px;

@@ -82,6 +82,7 @@ const theme = {
     lightblue: "#C5E2EE",
     starColor: "#fd4",
     grayOne: "#F7F7F7",
+    grayTwo: "#e6e6e6",
     blackOne: "#1c1c1c",
     blackTwo: "#111",
   },

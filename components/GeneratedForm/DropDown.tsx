@@ -2,15 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 
-const options = ["XXL", "XL", "L", "s"];
-
 interface Test {
   isShow: boolean;
 }
 
-const DropDown = () => {
+const DropDown = ({ options }: any) => {
   const [isShow, setIsShow] = useState(false);
-  const [select, setSelect] = useState("");
+  const [selectedItem, setSelectedItem] = useState("");
 
   const dropdownRef = useRef<any>();
 
@@ -24,6 +22,10 @@ const DropDown = () => {
     }
   };
 
+  const onClickSelect = (item: any) => {
+    setSelectedItem(item);
+  };
+
   useEffect(() => {
     window.addEventListener("click", closeContent);
   });
@@ -33,17 +35,17 @@ const DropDown = () => {
       <Text>옵션 1</Text>
       <DropDownWrapper>
         <DropDownBtn isShow={isShow} onClick={onClickShow} ref={dropdownRef}>
-          <DropDownText>{select}</DropDownText>
+          <DropDownText>{selectedItem}</DropDownText>
           {isShow ? (
             <RiArrowUpSLine size={24} />
           ) : (
             <RiArrowDownSLine size={24} />
           )}
         </DropDownBtn>
-        <DropdownContent>
+        <DropdownContent isShow={isShow}>
           {options && isShow
-            ? options.map((item, idx) => (
-                <DropdownItem key={idx} onClick={() => setSelect(item)}>
+            ? options.map((item: any, idx: number) => (
+                <DropdownItem key={idx} onClick={() => onClickSelect(item)}>
                   {item}
                 </DropdownItem>
               ))
@@ -71,6 +73,7 @@ const DropDownBtn = styled.div<Test>`
   background-color: #e9e9e9;
   border-style: none;
   border-radius: ${(props) => (props.isShow ? "10px 10px 0px 0px" : "10px")};
+  border: ${(props) => (props.isShow ? "1px solid black" : "none")};
   width: 400px;
   height: 54px;
   font-weight: bold;
@@ -80,12 +83,14 @@ const DropDownBtn = styled.div<Test>`
   justify-content: space-between;
 `;
 
-const DropdownContent = styled.div`
+const DropdownContent = styled.div<Test>`
   position: absolute;
   background-color: #f9f9f9;
   width: 400px;
   border-radius: 0 0 10px 10px;
   z-index: 1;
+  border: ${(props) => (props.isShow ? "1px solid black" : "none")};
+  border-top: none;
 `;
 
 const DropdownItem = styled.div`

@@ -57,9 +57,7 @@ function Editor({ value, onChange }: EditorProps) {
         modules={modules}
         formats={formats}
         value={value || ""}
-        onChange={(content, delta, source, editor) =>
-          onChange(editor.getHTML())
-        }
+        onChange={(content, delta, source, editor) => onChange(editor.getHTML())}
       />
     </ReactQuillContainer>
   );
